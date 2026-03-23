@@ -32,9 +32,6 @@ export default function Localisation() {
             <div className="map-road v2"></div>
             <div className="map-road d1"></div>
           </div>
-          <div className="map-pulse"></div>
-          <div className="map-pulse"></div>
-          <div className="map-pulse"></div>
           <div className="map-pin">
             <div className="map-pin-head"></div>
             <div className="map-pin-tail"></div>
