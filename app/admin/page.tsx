@@ -188,6 +188,7 @@ export default function Admin() {
             </p>
             <div className="admin-login-box">
               <h3>Connexion sécurisée</h3>
+              <p style={{ color: 'var(--mid)', marginBottom: '0.8rem' }}>Utilisateur : <strong>admin</strong> / Mot de passe : <strong>admin2024</strong></p>
               <div className="admin-field">
                 <label>Identifiant</label>
                 <input type="text" id="admin-user" placeholder="admin" />
@@ -197,6 +198,14 @@ export default function Admin() {
                 <input type="password" id="admin-pass" placeholder="••••••••" />
               </div>
               <button className="btn-login" onClick={handleLogin}>Accéder au tableau de bord</button>
+              <button
+                className="btn-logout"
+                style={{ marginTop: '0.75rem' }}
+                onClick={() => {
+                  localStorage.removeItem('adminLoggedIn');
+                  setIsLoggedIn(false);
+                }}
+              >Réinitialiser session</button>
             </div>
           </div>
         ) : (
