@@ -1055,13 +1055,10 @@ section { position: relative; overflow: hidden; }
    ============================================================ */
 .admin-section {
   padding: 8rem 8%;
-  background: linear-gradient(180deg, rgba(255,255,255,0.96), rgba(245,240,232,0.95));
-  color: var(--deep);
+  background: var(--deep);
   position: relative;
   overflow: hidden;
   display: block;
-  border: 1px solid rgba(122,140,110,0.25);
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.09);
 }
 .admin-section.visible { display: block; }
 .admin-section::before {
@@ -1077,20 +1074,13 @@ section { position: relative; overflow: hidden; }
   text-align: center;
 }
 .admin-login-box {
-  background: rgba(255,255,255,0.95);
-  border: 1px solid rgba(122,140,110,0.35);
-  color: var(--mid);
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(184,150,90,0.15);
   padding: 3rem;
   margin-top: 2rem;
-  box-shadow: 0 12px 30px rgba(0,0,0,0.25);
-  border-radius: 12px;
-}
-.admin-login-box input {
-  color: var(--mid);
-  background: #fff;
 }
 .admin-login-box p {
-  color: rgba(26,26,26,0.8);
+  color: rgba(245,240,232,0.55);
 }
 .btn-logout {
   margin-top: 0.75rem;
@@ -1110,26 +1100,19 @@ section { position: relative; overflow: hidden; }
   margin-bottom: 2rem;
 }
 .admin-login-box .admin-field label {
-  color: var(--mid);
-  opacity: 0.7;
+  color: rgba(184,150,90,0.6);
 }
 .admin-login-box .admin-field input {
-  width: 100% !important;
-  background: #ffffff !important;
-  border: 1px solid rgba(122,140,110,0.25) !important;
-  padding: 0.8rem 1rem !important;
-  color: var(--mid) !important;
-  font-family: var(--font-body);
-  outline: none;
-  font-size: 0.85rem;
-  transition: border-color 0.3s;
+  background: rgba(255,255,255,0.06) !important;
+  border: 1px solid rgba(255,255,255,0.12) !important;
+  color: var(--cream) !important;
 }
 .admin-login-box .admin-field input::placeholder {
-  color: rgba(26, 26, 26, 0.5);
+  color: rgba(245,240,232,0.25);
 }
 .admin-login-box .admin-field input:focus {
-  border-color: var(--gold) !important;
-  box-shadow: 0 0 0 3px rgba(184,150,90,0.15);
+  border-color: rgba(184,150,90,0.4) !important;
+  background: rgba(255,255,255,0.1) !important;
 }
 .admin-field {
   margin-bottom: 1.2rem;
