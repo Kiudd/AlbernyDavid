@@ -2,8 +2,7 @@
 
 import { motion, AnimatePresence } from 'framer-motion';
 import { usePathname } from 'next/navigation';
-import { useEffect, useState } from 'react';
-import LoadingIndicator from './LoadingIndicator';
+import { useEffect } from 'react';
 import { usePageTransitionPerformance } from '../hooks/usePageTransitionPerformance';
 
 interface PageTransitionProps {
@@ -12,20 +11,11 @@ interface PageTransitionProps {
 
 export default function PageTransition({ children }: PageTransitionProps) {
   const pathname = usePathname();
-  const [isLoading, setIsLoading] = useState(false);
   const { markTransitionStart, markTransitionEnd } = usePageTransitionPerformance();
 
   useEffect(() => {
     markTransitionStart();
-    setIsLoading(true);
-
-    // Réduction du délai de chargement
-    const timer = setTimeout(() => {
-      setIsLoading(false);
-      markTransitionEnd(`Page load: ${pathname}`);
-    }, 50);
-
-    return () => clearTimeout(timer);
+    markTransitionEnd(`Page load: ${pathname}`);
   }, [pathname, markTransitionStart, markTransitionEnd]);
 
   const pageVariants = {
@@ -50,21 +40,18 @@ export default function PageTransition({ children }: PageTransitionProps) {
   };
 
   return (
-    <>
-      <LoadingIndicator isLoading={isLoading} />
-      <AnimatePresence mode="wait" initial={false}>
-        <motion.div
-          key={pathname}
-          initial="initial"
-          animate="in"
-          exit="out"
-          variants={pageVariants}
-          transition={pageTransition}
-          className="page-transition"
-        >
-          {children}
-        </motion.div>
-      </AnimatePresence>
-    </>
+    <AnimatePresence mode="wait" initial={false}>
+      <motion.div
+        key={pathname}
+        initial="initial"
+        animate="in"
+        exit="out"
+        variants={pageVariants}
+        transition={pageTransition}
+        className="page-transition"
+      >
+        {children}
+      </motion.div>
+    </AnimatePresence>
   );
 }
