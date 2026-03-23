@@ -179,11 +179,11 @@ export default function Admin() {
       <section className="admin-section" style={{ minHeight: '100vh', paddingTop: '8rem' }}>
         {!isLoggedIn ? (
           <div className="admin-login">
-            <div className="section-label" style={{ justifyContent: 'center' }}>Accès restreint</div>
-            <h2 style={{ fontFamily: 'var(--font-serif)', fontSize: '2rem', fontWeight: 300, color: 'var(--cream)', marginBottom: '0.5rem' }}>
+            <div className="section-label" style={{ justifyContent: 'center', color: 'var(--gold)' }}>Accès restreint</div>
+            <h2 style={{ fontFamily: 'var(--font-serif)', fontSize: '2rem', fontWeight: 300, color: 'var(--bark)', marginBottom: '0.5rem' }}>
               Espace <em style={{ color: 'var(--rose)' }}>Administrateur</em>
             </h2>
-            <p style={{ fontSize: '0.78rem', color: 'rgba(245,240,232,0.35)', marginBottom: '0' }}>
+            <p style={{ fontSize: '0.78rem', color: 'var(--bark-l)', marginBottom: '0' }}>
               Connexion requise pour accéder au tableau de bord.
             </p>
             <div className="admin-login-box">

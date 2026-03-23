@@ -1109,6 +1109,28 @@ section { position: relative; overflow: hidden; }
   color: var(--gold);
   margin-bottom: 2rem;
 }
+.admin-login-box .admin-field label {
+  color: var(--mid);
+  opacity: 0.7;
+}
+.admin-login-box .admin-field input {
+  width: 100% !important;
+  background: #ffffff !important;
+  border: 1px solid rgba(122,140,110,0.25) !important;
+  padding: 0.8rem 1rem !important;
+  color: var(--mid) !important;
+  font-family: var(--font-body);
+  outline: none;
+  font-size: 0.85rem;
+  transition: border-color 0.3s;
+}
+.admin-login-box .admin-field input::placeholder {
+  color: rgba(26, 26, 26, 0.5);
+}
+.admin-login-box .admin-field input:focus {
+  border-color: var(--gold) !important;
+  box-shadow: 0 0 0 3px rgba(184,150,90,0.15);
+}
 .admin-field {
   margin-bottom: 1.2rem;
   text-align: left;
