@@ -1055,10 +1055,13 @@ section { position: relative; overflow: hidden; }
    ============================================================ */
 .admin-section {
   padding: 8rem 8%;
-  background: var(--deep);
+  background: linear-gradient(180deg, rgba(255,255,255,0.96), rgba(245,240,232,0.95));
+  color: var(--deep);
   position: relative;
   overflow: hidden;
-  display: block; /* corrigé pour afficher la section admin en permanence */
+  display: block;
+  border: 1px solid rgba(122,140,110,0.25);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.09);
 }
 .admin-section.visible { display: block; }
 .admin-section::before {
@@ -1149,10 +1152,15 @@ section { position: relative; overflow: hidden; }
 
 /* Admin dashboard */
 .admin-dashboard {
-  display: none;
+  display: block;
   position: relative; z-index: 1;
 }
 .admin-dashboard.visible { display: block; }
+
+/* Admin login */
+.admin-login {
+  display: block;
+}
 .admin-topbar {
   display: flex; align-items: center; justify-content: space-between;
   padding-bottom: 2rem;
