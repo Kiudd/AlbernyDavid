@@ -50,7 +50,21 @@ export default function Admin() {
     // Check if already logged in (simple localStorage for demo)
     const loggedIn = localStorage.getItem('adminLoggedIn') === 'true';
     setIsLoggedIn(loggedIn);
+
+    const savedProducts = localStorage.getItem('albernydavidProducts');
+    if (savedProducts) {
+      try {
+        setProducts(JSON.parse(savedProducts));
+      } catch {
+        setProducts(initialProducts);
+      }
+    }
   }, []);
+
+  const syncProductsStorage = (newProducts: Product[]) => {
+    setProducts(newProducts);
+    localStorage.setItem('albernydavidProducts', JSON.stringify(newProducts));
+  };
 
   const handleLogin = () => {
     const username = (document.getElementById('admin-user') as HTMLInputElement)?.value;
@@ -96,7 +110,7 @@ export default function Admin() {
     if (editIndex >= 0) {
       const updatedProducts = [...products];
       updatedProducts[editIndex] = { ...updatedProducts[editIndex], ...formData };
-      setProducts(updatedProducts);
+      syncProductsStorage(updatedProducts);
       setNotification({
         message: '✦ Produit mis à jour avec succès.',
         type: 'success',
@@ -104,10 +118,10 @@ export default function Admin() {
       });
     } else {
       const newProduct: Product = {
-        id: Math.max(...products.map(p => p.id)) + 1,
+        id: products.length ? Math.max(...products.map(p => p.id)) + 1 : 1,
         ...formData
       };
-      setProducts([...products, newProduct]);
+      syncProductsStorage([...products, newProduct]);
       setNotification({
         message: '✦ Produit ajouté avec succès.',
         type: 'success',
@@ -140,7 +154,7 @@ export default function Admin() {
   const deleteProduct = (index: number) => {
     if (!confirm('Supprimer ce produit ?')) return;
     const updatedProducts = products.filter((_, i) => i !== index);
-    setProducts(updatedProducts);
+    syncProductsStorage(updatedProducts);
     setNotification({
       message: '✦ Produit supprimé.',
       type: 'success',
@@ -249,6 +263,18 @@ export default function Admin() {
                       placeholder="https://…image.jpg"
                     />
                   </div>
+                  {formData.img && (
+                    <div style={{ margin: '1rem 0', textAlign: 'center' }}>
+                      <img
+                        src={formData.img}
+                        alt="Aperçu"
+                        style={{ maxWidth: '100%', maxHeight: '160px', borderRadius: '8px', border: '1px solid rgba(255,255,255,.15)' }}
+                        onError={(e) => {
+                          (e.target as HTMLImageElement).src = 'https://via.placeholder.com/240?text=Image+indisponible';
+                        }}
+                      />
+                    </div>
+                  )}
                   <button className="btn-add" onClick={saveProduct}>
                     {editIndex >= 0 ? 'Mettre à jour' : 'Ajouter le produit'}
                   </button>
