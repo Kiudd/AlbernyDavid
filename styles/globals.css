@@ -1082,16 +1082,6 @@ section { position: relative; overflow: hidden; }
 .admin-login-box p {
   color: rgba(245,240,232,0.55);
 }
-.btn-logout {
-  margin-top: 0.75rem;
-  width: 100%;
-  background: var(--rose);
-  color: #fff;
-  border: 1px solid var(--rose);
-}
-.btn-logout:hover {
-  background: #9d5d56;
-}
 .admin-login-box h3 {
   font-family: var(--font-caps);
   font-size: 0.85rem;
