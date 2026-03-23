@@ -240,17 +240,14 @@ nav.scrolled {
 }
 .ring-layer:nth-child(1) {
   border-color: rgba(184,150,90,0.25);
-  animation: pulseRing 4s ease-in-out infinite;
 }
 .ring-layer:nth-child(2) {
   inset: 40px;
   border-color: rgba(201,133,122,0.20);
-  animation: pulseRing 4s ease-in-out infinite 0.5s;
 }
 .ring-layer:nth-child(3) {
   inset: 80px;
   border-color: rgba(122,140,110,0.30);
-  animation: pulseRing 4s ease-in-out infinite 1s;
 }
 .ring-layer:nth-child(4) {
   inset: 130px;
@@ -267,10 +264,6 @@ nav.scrolled {
   letter-spacing: 0.3em;
   color: var(--gold);
   border: 1px solid rgba(184,150,90,0.2);
-}
-@keyframes pulseRing {
-  0%,100% { opacity: 0.6; transform: scale(1); }
-  50%      { opacity: 1;   transform: scale(1.02); }
 }
 /* Orbiting dots */
 .orbit-dot {
