@@ -1520,12 +1520,225 @@ body {
   .hero-3d-ring { display: none; }
 }
 @media (max-width: 768px) {
+  /* Navigation mobile */
   nav { padding: 1.2rem 6%; }
   nav.scrolled { padding: 0.8rem 6%; }
   .nav-links { display: none; }
-  .hero-content { padding-left: 6%; }
-  .about, .location-section, .contact-inner { grid-template-columns: 1fr; }
-  .products-grid { grid-template-columns: repeat(2, 1fr); gap: 1.2rem; }
-  .footer-grid { grid-template-columns: 1fr; gap: 2.5rem; }
+  .nav-logo { font-size: 1rem; }
+
+  /* Hero section mobile */
+  .hero-content {
+    padding-left: 6%;
+    padding-right: 6%;
+    padding-top: 8rem;
+  }
+  .hero-title {
+    font-size: clamp(2.5rem, 12vw, 4rem);
+    line-height: 1.1;
+  }
+  .hero-subtitle {
+    font-size: 1.1rem;
+    margin-bottom: 2rem;
+  }
+  .hero-3d-ring { display: none; }
+
+  /* Layout adjustments */
+  .about, .location-section, .contact-inner {
+    grid-template-columns: 1fr;
+    gap: 3rem;
+  }
+  .products-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.2rem;
+  }
+  .footer-grid {
+    grid-template-columns: 1fr;
+    gap: 2.5rem;
+  }
+
+  /* Section titles */
+  .section-title {
+    font-size: clamp(2rem, 8vw, 3.5rem);
+    line-height: 1.2;
+  }
+
+  /* Product cards */
+  .product-card {
+    padding: 1.5rem;
+  }
+  .product-name {
+    font-size: 1.1rem;
+  }
+  .product-desc {
+    font-size: 0.9rem;
+  }
+
+  /* Buttons */
+  .btn-primary {
+    padding: 1rem 2rem;
+    font-size: 0.9rem;
+  }
+
+  /* Admin panel mobile */
   .admin-layout { grid-template-columns: 1fr; }
+  .admin-section { padding: 6rem 4%; }
+  .admin-form-panel { padding: 1.5rem; }
+  .admin-form-title { font-size: 0.7rem; }
+  .admin-field input,
+  .admin-field textarea,
+  .admin-field select {
+    padding: 0.8rem;
+    font-size: 0.9rem;
+  }
+  .admin-products-panel { padding: 1.5rem; }
+  .admin-product-row {
+    padding: 1rem;
+    font-size: 0.85rem;
+  }
+  .admin-product-actions {
+    gap: 0.5rem;
+  }
+  .btn-edit, .btn-del {
+    padding: 0.4rem 0.8rem;
+    font-size: 0.8rem;
+  }
+
+  /* Contact form */
+  .contact-form { gap: 1rem; }
+  .contact-field input,
+  .contact-field textarea {
+    padding: 1rem;
+    font-size: 0.9rem;
+  }
+
+  /* Footer */
+  .footer-section { padding: 3rem 6%; }
+  .footer-col-title { font-size: 0.9rem; }
+  .footer-links { gap: 1rem; }
+
+  /* Location section */
+  .location-section { padding: 6rem 6% 4rem; }
+  .location-address {
+    font-size: 1.1rem;
+    margin-bottom: 2rem;
+  }
+  .location-hours {
+    margin-bottom: 2rem;
+  }
+  .hours-title {
+    font-size: 0.9rem;
+    margin-bottom: 1rem;
+  }
+  .hours-row {
+    font-size: 0.9rem;
+    margin-bottom: 0.5rem;
+  }
+  .location-map iframe {
+    height: 300px;
+  }
+
+  /* Presentation page */
+  .presentation-hero {
+    padding: 8rem 6% 4rem;
+  }
+
+  /* About section */
+  .about-visual { max-width: 100%; }
+  .about-desc {
+    font-size: 1rem;
+    line-height: 1.6;
+  }
+
+  /* Marquee */
+  .marquee-text {
+    font-size: 2rem;
+  }
+
+  /* Notification */
+  .notification {
+    left: 4%;
+    right: 4%;
+    padding: 1rem;
+    font-size: 0.9rem;
+  }
+}
+
+/* Very small screens */
+@media (max-width: 480px) {
+  nav { padding: 1rem 4%; }
+  nav.scrolled { padding: 0.8rem 4%; }
+
+  .hero-content {
+    padding-top: 6rem;
+    padding-left: 4%;
+    padding-right: 4%;
+  }
+  .hero-title {
+    font-size: clamp(2rem, 14vw, 3rem);
+  }
+  .hero-subtitle {
+    font-size: 1rem;
+  }
+
+  .section-title {
+    font-size: clamp(1.8rem, 10vw, 2.5rem);
+  }
+
+  .products-grid {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+
+  .product-card {
+    padding: 1.2rem;
+  }
+
+  .btn-primary {
+    width: 100%;
+    padding: 1.2rem;
+    font-size: 0.95rem;
+  }
+
+  .admin-section { padding: 4rem 4%; }
+  .admin-form-panel { padding: 1.2rem; }
+  .admin-topbar {
+    flex-direction: column;
+    gap: 1rem;
+    align-items: flex-start;
+  }
+  .admin-products-panel { padding: 1.2rem; }
+  .admin-product-row {
+    padding: 0.8rem;
+    font-size: 0.8rem;
+  }
+
+  .location-section { padding: 4rem 4% 3rem; }
+  .location-map iframe {
+    height: 250px;
+  }
+
+  .footer-section { padding: 2rem 4%; }
+  .footer-links {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .contact-form {
+    grid-template-columns: 1fr;
+  }
+
+  .marquee-text {
+    font-size: 1.5rem;
+  }
+
+  /* Improve touch targets */
+  button, .btn-primary, .btn-send, .btn-login, .btn-logout {
+    min-height: 44px;
+    min-width: 44px;
+  }
+
+  /* Better spacing for touch */
+  .nav-links a {
+    padding: 0.5rem 0;
+  }
 }
