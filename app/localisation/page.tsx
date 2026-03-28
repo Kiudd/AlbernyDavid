@@ -26,15 +26,15 @@ export default function Localisation() {
           <div className="location-hours">
             <div className="hours-title">Horaires d'ouverture</div>
             <div className="hours-row">
-              <span className="day">Lundi – Vendredi</span>
-              <span>9h00 – 18h30</span>
-            </div>
-            <div className="hours-row">
-              <span className="day">Samedi</span>
-              <span>10h00 – 17h00</span>
+              <span className="day">Mardi – Samedi</span>
+              <span>9h00 – 12h00 / 14h00 – 18h00</span>
             </div>
             <div className="hours-row">
               <span className="day">Dimanche</span>
+              <span>Fermé</span>
+            </div>
+            <div className="hours-row">
+              <span className="day">Lundi</span>
               <span>Fermé</span>
             </div>
           </div>
