@@ -53,7 +53,7 @@ export default function Navigation() {
         whileTap={{ scale: 0.98 }}
       >
         <Link href="/" className="nav-logo">
-          Alberny<span>y</span>Davide
+          AlbernyDavid
         </Link>
       </motion.div>
 

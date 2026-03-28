@@ -31,13 +31,13 @@ export default function Footer() {
           <div className="footer-col-title">Contact</div>
           <ul className="footer-links">
             <li><a>12 Rue des Fleurs, Lyon</a></li>
-            <li><a>contact@albernydavide.fr</a></li>
+            <li><a>contact@AlbernyDavid.fr</a></li>
             <li><a>+33 4 78 00 00 00</a></li>
           </ul>
         </div>
       </div>
       <div className="footer-bottom">
-        <span className="footer-copy">© 2024 AlbernyDavide — Tous droits réservés</span>
+        <span className="footer-copy">© 2024 AlbernyDavid — Tous droits réservés</span>
         <span className="footer-sep">✦ Fait avec passion</span>
       </div>
     </footer>

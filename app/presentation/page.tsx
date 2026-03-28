@@ -10,12 +10,12 @@ export default function Presentation() {
       <section style={{ paddingTop: '10rem', minHeight: '40vh', paddingLeft: '8%', paddingRight: '8%', background: 'var(--cream)' }}>
         <div className="section-label">Notre histoire</div>
         <h1 className="section-title" style={{ fontSize: 'clamp(2.8rem,5vw,5rem)', marginBottom: '2rem' }}>
-          L'âme d'<em>AlbernyDavide</em>
+          L'âme d'<em>AlbernyDavid</em>
         </h1>
         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '5rem', alignItems: 'start', marginTop: '4rem' }}>
           <div>
             <p className="about-desc" style={{ fontSize: '1.1rem', lineHeight: '1.9', marginBottom: '2rem' }}>
-              Fondé en 2009 par David Albernet, passionné de botanique et de décoration intérieure, <strong>AlbernyDavide</strong> est devenu une référence dans le monde de l'art floral et végétal en France.
+              Fondé en 2009 par David Albernet, passionné de botanique et de décoration intérieure, <strong>AlbernyDavid</strong> est devenu une référence dans le monde de l'art floral et végétal en France.
             </p>
             <p className="about-desc" style={{ marginBottom: '2rem' }}>
               Notre atelier est un espace vivant où chaque plante, chaque fleur, chaque branche est traité comme une matière précieuse. Nous ne créons pas simplement des décorations — nous racontons des histoires à travers le végétal.

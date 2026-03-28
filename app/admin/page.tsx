@@ -51,7 +51,7 @@ export default function Admin() {
     const loggedIn = localStorage.getItem('adminLoggedIn') === 'true';
     setIsLoggedIn(loggedIn);
 
-    const savedProducts = localStorage.getItem('albernydavidProducts');
+    const savedProducts = localStorage.getItem('AlbernyDavidProducts');
     if (savedProducts) {
       try {
         setProducts(JSON.parse(savedProducts));
@@ -63,7 +63,7 @@ export default function Admin() {
 
   const syncProductsStorage = (newProducts: Product[]) => {
     setProducts(newProducts);
-    localStorage.setItem('albernydavidProducts', JSON.stringify(newProducts));
+    localStorage.setItem('AlbernyDavidProducts', JSON.stringify(newProducts));
   };
 
   const handleLogin = () => {
@@ -211,7 +211,7 @@ export default function Admin() {
         ) : (
           <div className="admin-dashboard">
             <div className="admin-topbar">
-              <h2>✦ Tableau de bord — AlbernyDavide</h2>
+              <h2>✦ Tableau de bord — AlbernyDavid</h2>
               <button className="btn-logout" onClick={handleLogout}>Déconnexion</button>
             </div>
             <div className="admin-layout">

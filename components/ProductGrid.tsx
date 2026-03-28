@@ -37,7 +37,7 @@ export default function ProductGrid({ limit, showFilters = false }: ProductGridP
   const [activeFilter, setActiveFilter] = useState('tous');
 
   useEffect(() => {
-    const saved = localStorage.getItem('albernydavidProducts');
+    const saved = localStorage.getItem('AlbernyDavidProducts');
     if (saved) {
       try {
         setProducts(JSON.parse(saved));
@@ -48,7 +48,7 @@ export default function ProductGrid({ limit, showFilters = false }: ProductGridP
   }, []);
 
   useEffect(() => {
-    localStorage.setItem('albernydavidProducts', JSON.stringify(products));
+    localStorage.setItem('AlbernyDavidProducts', JSON.stringify(products));
   }, [products]);
 
   const filteredProducts = activeFilter === 'tous'

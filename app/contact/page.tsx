@@ -48,7 +48,7 @@ export default function Contact() {
               <div className="contact-icon">✉</div>
               <div>
                 <div className="contact-detail-label">Email</div>
-                <div className="contact-detail-val">contact@albernydavide.fr</div>
+                <div className="contact-detail-val">contact@AlbernyDavid.fr</div>
               </div>
             </div>
             <div className="contact-info-item">

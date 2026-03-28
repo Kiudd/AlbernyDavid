@@ -34,7 +34,7 @@ export default function About() {
       <div className="about-text">
         <div className="section-label">Notre atelier</div>
         <h2 className="section-title">L'art du vivant,<br/><em>transmis avec soin</em></h2>
-        <p className="about-desc">AlbernyDavide est né d'une passion profonde pour la beauté du monde végétal. Depuis 2009, notre atelier crée des compositions uniques qui transforment chaque espace en œuvre d'art naturelle.</p>
+        <p className="about-desc">AlbernyDavid est né d'une passion profonde pour la beauté du monde végétal. Depuis 2009, notre atelier crée des compositions uniques qui transforment chaque espace en œuvre d'art naturelle.</p>
         <p className="about-desc">Chaque création est pensée, conçue et réalisée à la main, avec des matières soigneusement sélectionnées pour leur qualité et leur caractère singulier.</p>
         <div className="about-stats">
           <div>
