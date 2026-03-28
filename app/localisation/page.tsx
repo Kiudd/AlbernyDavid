@@ -24,18 +24,15 @@ export default function Localisation() {
           </a>
         </div>
         <div className="location-map">
-          <div className="map-grid"></div>
-          <div className="map-roads">
-            <div className="map-road h1"></div>
-            <div className="map-road h2"></div>
-            <div className="map-road v1"></div>
-            <div className="map-road v2"></div>
-            <div className="map-road d1"></div>
-          </div>
-          <div className="map-pin">
-            <div className="map-pin-head"></div>
-            <div className="map-pin-tail"></div>
-          </div>
+          <iframe 
+            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2928.4793730915135!2d2.964816975953895!3d42.77821477115711!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x12b0665f4ca39c8b%3A0xf9e878856d4bf3de!2sAlberny%20David!5e0!3m2!1sfr!2sfr!4v1774719524324!5m2!1sfr!2sfr" 
+            width="100%" 
+            height="450" 
+            style={{ border: 0 }} 
+            allowFullScreen="" 
+            loading="lazy" 
+            referrerPolicy="no-referrer-when-downgrade"
+          ></iframe>
         </div>
       </section>
     </>
