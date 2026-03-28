@@ -264,13 +264,26 @@ export default function Admin() {
                     </div>
                   </div>
                   <div>
-                    <label>URL de l'image</label>
+                    <label>Image du produit</label>
                     <input
-                      type="text"
-                      value={formData.img}
-                      onChange={(e) => setFormData(prev => ({ ...prev, img: e.target.value }))}
-                      placeholder="https://…image.jpg"
+                      type="file"
+                      accept="image/*"
+                      onChange={(e) => {
+                        const file = e.target.files?.[0];
+                        if (file) {
+                          const reader = new FileReader();
+                          reader.onload = (event) => {
+                            setFormData(prev => ({ ...prev, img: event.target?.result as string }));
+                          };
+                          reader.readAsDataURL(file);
+                        }
+                      }}
                     />
+                    {formData.img && (
+                      <div style={{ marginTop: '0.5rem', fontSize: '0.8rem', color: 'rgba(245,240,232,0.6)' }}>
+                        Image sélectionnée
+                      </div>
+                    )}
                   </div>
                   {formData.img && (
                     <div style={{ margin: '1rem 0', textAlign: 'center' }}>
