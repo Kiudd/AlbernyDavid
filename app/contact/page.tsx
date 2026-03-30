@@ -61,16 +61,14 @@ export default function Contact() {
               <div className="contact-icon">✉</div>
               <div>
                 <div className="contact-detail-label">Email</div>
-                <div className="contact-detail-val">
-                  contact@AlbernyDavid.fr
-                </div>
+                <div className="contact-detail-val">Albernydavid@orange.fr</div>
               </div>
             </div>
             <div className="contact-info-item">
               <div className="contact-icon">☎</div>
               <div>
                 <div className="contact-detail-label">Téléphone</div>
-                <div className="contact-detail-val">+33 4 78 00 00 00</div>
+                <div className="contact-detail-val">06 76 34 63 34</div>
               </div>
             </div>
             <div className="contact-info-item">
@@ -78,7 +76,7 @@ export default function Contact() {
               <div>
                 <div className="contact-detail-label">Adresse</div>
                 <div className="contact-detail-val">
-                  12 Rue des Fleurs, 69001 Lyon
+                  Pla de Saint-Jean, 66510 Saint-Hippolyte
                 </div>
               </div>
             </div>

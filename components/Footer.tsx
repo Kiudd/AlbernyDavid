@@ -12,11 +12,6 @@ export default function Footer() {
             L'art botanique au service de votre intérieur — des créations
             végétales d'exception, nées de la passion et du savoir-faire.
           </p>
-          <div className="footer-social">
-            <a className="social-btn">✦</a>
-            <a className="social-btn">◈</a>
-            <a className="social-btn">◎</a>
-          </div>
         </div>
         <div>
           <div className="footer-col-title">Navigation</div>
