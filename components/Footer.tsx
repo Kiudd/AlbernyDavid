@@ -37,13 +37,13 @@ export default function Footer() {
           <div className="footer-col-title">Contact</div>
           <ul className="footer-links">
             <li>
-              <a>12 Rue des Fleurs, Lyon</a>
+              <a></a>
             </li>
             <li>
-              <a>contact@AlbernyDavid.fr</a>
+              <a> Pla de Saint-Jean, 66510 Saint-Hippolyte</a>
             </li>
             <li>
-              <a>+33 4 78 00 00 00</a>
+              <a>06 76 34 63 34</a>
             </li>
           </ul>
         </div>
