@@ -53,6 +53,14 @@ export default function Footer() {
           © 2024 AlbernyDavid — Tous droits réservés
         </span>
         <span className="footer-sep">✦ Fait avec passion</span>
+        <a
+          href="/cgu.pdf"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="footer-cgu"
+        >
+          CGU
+        </a>
       </div>
     </footer>
   );
