@@ -37,7 +37,7 @@ export default function Footer() {
           <div className="footer-col-title">Contact</div>
           <ul className="footer-links">
             <li>
-              <a></a>
+              <a>Albernydavid@orange.fr</a>
             </li>
             <li>
               <a> Pla de Saint-Jean, 66510 Saint-Hippolyte</a>
