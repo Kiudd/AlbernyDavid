@@ -54,7 +54,7 @@ export default function Footer() {
         </span>
         <span className="footer-sep">✦ Fait avec passion</span>
         <a
-          href="/cgu.pdf"
+          href="/CGU.pdf"
           target="_blank"
           rel="noopener noreferrer"
           className="footer-cgu"
