@@ -3,12 +3,8 @@
 import CustomCursor from '../../components/CustomCursor';
 import Navigation from '../../components/Navigation';
 import ProductGrid from '../../components/ProductGrid';
-import ShoppingCart from '../../components/ShoppingCart';
-import { useCart } from '../../components/CartContext';
 
 export default function Produits() {
-  const { isCartOpen, setIsCartOpen } = useCart();
-
   return (
     <>
       <CustomCursor />
@@ -20,7 +16,6 @@ export default function Produits() {
         </div>
         <ProductGrid showFilters={true} />
       </section>
-      <ShoppingCart isOpen={isCartOpen} onClose={() => setIsCartOpen(false)} />
     </>
   );
 }

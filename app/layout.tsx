@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import "../styles/globals.css";
 import PageTransition from "../components/PageTransition";
 import { CartProvider } from "../components/CartContext";
+import ShoppingCartWrapper from "../components/ShoppingCartWrapper";
 import "../utils/performance";
 
 export const metadata: Metadata = {
@@ -34,6 +35,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           <PageTransition>
             {children}
           </PageTransition>
+          <ShoppingCartWrapper />
         </CartProvider>
       </body>
     </html>
