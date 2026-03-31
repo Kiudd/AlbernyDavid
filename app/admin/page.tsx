@@ -14,6 +14,7 @@ const initialProducts: Product[] = [
     desc: "Une rose ancienne aux pétales veloutés, à la fragrance envoûtante et à la couleur d'un rose profond.",
     color: "#c9857a",
     img: "",
+    price: 25,
   },
   {
     id: 2,
@@ -22,6 +23,7 @@ const initialProducts: Product[] = [
     desc: "Floraison spectaculaire aux teintes corail chaud, idéale pour les compositions estivales luxuriantes.",
     color: "#e8a090",
     img: "",
+    price: 35,
   },
   {
     id: 3,
@@ -30,6 +32,7 @@ const initialProducts: Product[] = [
     desc: "Élégance pure avec ses pétales en velours violet profond, symbole de sagesse et d'admiration.",
     color: "#7a6090",
     img: "",
+    price: 20,
   },
   {
     id: 4,
@@ -38,6 +41,7 @@ const initialProducts: Product[] = [
     desc: "Citronnier compact au feuillage lustré, produisant de petits fruits dorés très parfumés.",
     color: "#d4b87a",
     img: "",
+    price: 45,
   },
   {
     id: 5,
@@ -46,6 +50,7 @@ const initialProducts: Product[] = [
     desc: "Variété compacte au feuillage découpé, idéale en pot. Produit de petites figues violettes en été.",
     color: "#8a7060",
     img: "",
+    price: 40,
   },
   {
     id: 6,
@@ -54,6 +59,7 @@ const initialProducts: Product[] = [
     desc: "Fleurs écarlates suivies de fruits rouge-orangé décoratifs, une beauté méditerranéenne en miniature.",
     color: "#c05040",
     img: "",
+    price: 50,
   },
   {
     id: 7,
@@ -62,6 +68,7 @@ const initialProducts: Product[] = [
     desc: "Érable du Japon en miniature, aux feuilles découpées qui s'embrasent en rouge à l'automne.",
     color: "#c07050",
     img: "",
+    price: 120,
   },
   {
     id: 8,
@@ -70,6 +77,7 @@ const initialProducts: Product[] = [
     desc: "Tronc tortueux et feuillage argenté, symbole méditerranéen de longévité et de paix.",
     color: "#a8b89a",
     img: "",
+    price: 200,
   },
   {
     id: 9,
@@ -78,6 +86,7 @@ const initialProducts: Product[] = [
     desc: "Épi parfumé aux fleurs violettes, un classique intemporel qui embaume les intérieurs.",
     color: "#9a80c0",
     img: "",
+    price: 15,
   },
   {
     id: 10,
@@ -86,6 +95,7 @@ const initialProducts: Product[] = [
     desc: "Herbe aromatique aux feuilles violacées, aussi décorative que parfumée en cuisine gastronomique.",
     color: "#7a5060",
     img: "",
+    price: 12,
   },
   {
     id: 11,
@@ -94,6 +104,7 @@ const initialProducts: Product[] = [
     desc: "Feuillage rond et argenté très tendance en décoration, avec son parfum frais et apaisant.",
     color: "#8aaa98",
     img: "",
+    price: 30,
   },
   {
     id: 12,
@@ -102,6 +113,7 @@ const initialProducts: Product[] = [
     desc: "Fleurs délicates aux pétales satinés blancs ou roses, qui dansent au moindre souffle de vent.",
     color: "#e8c4d0",
     img: "",
+    price: 18,
   },
 ];
 
@@ -132,6 +144,7 @@ export default function Admin() {
     desc: "",
     color: "#c9857a",
     img: "",
+    price: 0,
   });
 
   useEffect(() => {
@@ -228,6 +241,7 @@ export default function Admin() {
       desc: "",
       color: "#c9857a",
       img: "",
+      price: 0,
     });
     setEditIndex(-1);
   };
@@ -240,6 +254,7 @@ export default function Admin() {
       desc: product.desc,
       color: product.color,
       img: product.img || "",
+      price: product.price,
     });
     setEditIndex(index);
   };
@@ -384,6 +399,22 @@ export default function Admin() {
                       }
                       placeholder="Décrivez ce produit…"
                     ></textarea>
+                  </div>
+                  <div>
+                    <label>Prix (€)</label>
+                    <input
+                      type="number"
+                      value={formData.price}
+                      onChange={(e) =>
+                        setFormData((prev) => ({
+                          ...prev,
+                          price: parseFloat(e.target.value) || 0,
+                        }))
+                      }
+                      placeholder="0"
+                      min="0"
+                      step="0.01"
+                    />
                   </div>
                   <div>
                     <label>Couleur associée</label>

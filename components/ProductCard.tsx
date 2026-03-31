@@ -5,6 +5,7 @@ interface Product {
   desc: string;
   color: string;
   img?: string;
+  price: number;
 }
 
 interface ProductCardProps {
@@ -55,8 +56,19 @@ export default function ProductCard({ product }: ProductCardProps) {
       <div className="product-info">
         <div className="product-name">{product.name}</div>
         <div className="product-desc">{product.desc}</div>
+        <div className="product-price">{product.price}€</div>
         <div className="product-footer">
           <span className="product-cat">{product.cat}</span>
+          <button
+            className="product-add-cart"
+            onClick={() => {
+              if ((window as any).addToCart) {
+                (window as any).addToCart(product);
+              }
+            }}
+          >
+            Ajouter au panier
+          </button>
           <div className="product-arrow">→</div>
         </div>
       </div>
