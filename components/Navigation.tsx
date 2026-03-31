@@ -67,132 +67,131 @@ export default function Navigation() {
   };
 
   return (
-    <motion.nav
-      id="navbar"
-      className={isScrolled ? "scrolled" : ""}
-      initial="hidden"
-      animate="visible"
-      variants={navVariants}
-    >
-      <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
-        <Link href="/" className="nav-logo" onClick={closeMobileMenu}>
-          AlbernyDavid
-        </Link>
-      </motion.div>
-
+    <>
       {/* Desktop Navigation */}
-      <ul className="nav-links desktop-nav">
-        {[
-          { href: "/", label: "Accueil" },
-          { href: "/presentation", label: "Présentation" },
-          { href: "/produits", label: "Produits" },
-          { href: "/localisation", label: "Localisation" },
-          { href: "/contact", label: "Contact" },
-        ].map(({ href, label }) => (
-          <motion.li
-            key={href}
-            variants={linkVariants}
-            whileHover="hover"
-            whileTap="tap"
-          >
-            <Link href={href} className={pathname === href ? "active" : ""}>
-              {label}
-              <motion.span
-                className="nav-link-indicator"
-                initial={{ width: pathname === href ? "100%" : "0%" }}
-                animate={{ width: pathname === href ? "100%" : "0%" }}
-                transition={{ duration: 0.3 }}
-              />
-            </Link>
-          </motion.li>
-        ))}
-      </ul>
-
-      {/* Cart Button */}
-      <motion.button
-        className="nav-cart-btn"
-        onClick={() => setIsCartOpen(true)}
-        whileHover={{ scale: 1.05 }}
-        whileTap={{ scale: 0.95 }}
+      <motion.nav
+        id="navbar"
+        className={`desktop-nav ${isScrolled ? "scrolled" : ""}`}
+        initial="hidden"
+        animate="visible"
+        variants={navVariants}
       >
-        🛒
-        {totalItems > 0 && (
-          <span className="cart-count">{totalItems}</span>
-        )}
-      </motion.button>
+        <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
+          <Link href="/" className="nav-logo" onClick={closeMobileMenu}>
+            AlbernyDavid
+          </Link>
+        </motion.div>
 
-      {/* Mobile Menu Button */}
-      <button
-        className="mobile-menu-btn"
-        onClick={toggleMobileMenu}
-        aria-label="Toggle mobile menu"
-      >
-        <span className={`hamburger ${isMobileMenuOpen ? 'open' : ''}`}>
-          <span></span>
-          <span></span>
-          <span></span>
-        </span>
-      </button>
+        <ul className="nav-links desktop-nav">
+          {[
+            { href: "/", label: "Accueil" },
+            { href: "/presentation", label: "Présentation" },
+            { href: "/produits", label: "Produits" },
+            { href: "/localisation", label: "Localisation" },
+            { href: "/contact", label: "Contact" },
+          ].map(({ href, label }) => (
+            <motion.li
+              key={href}
+              variants={linkVariants}
+              whileHover="hover"
+              whileTap="tap"
+            >
+              <Link href={href} className={pathname === href ? "active" : ""}>
+                {label}
+                <motion.span
+                  className="nav-link-indicator"
+                  initial={{ width: pathname === href ? "100%" : "0%" }}
+                  animate={{ width: pathname === href ? "100%" : "0%" }}
+                  transition={{ duration: 0.3 }}
+                />
+              </Link>
+            </motion.li>
+          ))}
+        </ul>
 
-      {/* Mobile Navigation */}
-      <AnimatePresence>
-        {isMobileMenuOpen && (
-          <motion.div
-            className="mobile-menu"
-            initial={{ opacity: 0, y: -20 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -20 }}
-            transition={{ duration: 0.3 }}
-          >
-            <ul className="nav-links mobile-nav">
-              {[
-                { href: "/", label: "Accueil" },
-                { href: "/presentation", label: "Présentation" },
-                { href: "/produits", label: "Produits" },
-                { href: "/localisation", label: "Localisation" },
-                { href: "/contact", label: "Contact" },
-              ].map(({ href, label }) => (
-                <motion.li
-                  key={href}
-                  variants={linkVariants}
-                  whileTap="tap"
-                >
-                  <Link
-                    href={href}
-                    className={pathname === href ? "active" : ""}
-                    onClick={closeMobileMenu}
-                  >
-                    {label}
-                  </Link>
-                </motion.li>
-              ))}
-              <motion.li
-                variants={linkVariants}
-                whileTap="tap"
-              >
-                <button
-                  className="nav-cart-btn mobile-cart-btn"
-                  onClick={() => {
-                    setIsCartOpen(true);
-                    closeMobileMenu();
-                  }}
-                >
-                  🛒 Panier
-                  {totalItems > 0 && (
-                    <span className="cart-count">{totalItems}</span>
-                  )}
-                </button>
-              </motion.li>
-            </ul>
-          </motion.div>
-        )}
-      </AnimatePresence>
+        <motion.button
+          className="nav-cart-btn"
+          onClick={() => setIsCartOpen(true)}
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.95 }}
+        >
+          🛒
+          {totalItems > 0 && (
+            <span className="cart-count">{totalItems}</span>
+          )}
+        </motion.button>
 
-      <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-        <Link href="/admin" className="nav-admin">
-          Espace Admin
-        </Link>
-      </motion.div>
-    </motion.nav>
+        <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+          <Link href="/admin" className="nav-admin">
+            Espace Admin
+          </Link>
+        </motion.div>
+      </motion.nav>
+
+      {/* Mobile Navigation - Completely Separate */}
+      <nav className="mobile-nav-header">
+        <div className="mobile-nav-content">
+          <Link href="/" className="mobile-nav-logo">
+            AlbernyDavid
+          </Link>
+
+          <div className="mobile-nav-actions">
+            <button
+              className="mobile-nav-cart-btn"
+              onClick={() => setIsCartOpen(true)}
+            >
+              🛒
+              {totalItems > 0 && (
+                <span className="mobile-cart-count">{totalItems}</span>
+              )}
+            </button>
+
+            <button
+              className="mobile-menu-btn"
+              onClick={toggleMobileMenu}
+              aria-label="Toggle mobile menu"
+            >
+              <span className={`hamburger ${isMobileMenuOpen ? 'open' : ''}`}>
+                <span></span>
+                <span></span>
+                <span></span>
+              </span>
+            </button>
+          </div>
+        </div>
+
+        <AnimatePresence>
+          {isMobileMenuOpen && (
+            <motion.div
+              className="mobile-menu"
+              initial={{ opacity: 0, y: -20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -20 }}
+              transition={{ duration: 0.3 }}
+            >
+              <ul className="mobile-nav-links">
+                {[
+                  { href: "/", label: "Accueil" },
+                  { href: "/presentation", label: "Présentation" },
+                  { href: "/produits", label: "Produits" },
+                  { href: "/localisation", label: "Localisation" },
+                  { href: "/contact", label: "Contact" },
+                ].map(({ href, label }) => (
+                  <li key={href}>
+                    <Link
+                      href={href}
+                      className={pathname === href ? "active" : ""}
+                      onClick={closeMobileMenu}
+                    >
+                      {label}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </nav>
+    </>
   );
 }

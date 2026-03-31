@@ -2500,10 +2500,10 @@ body {
 @media (max-width: 768px) {
   /* Navigation mobile - REMOVED conflicting nav styles */
 
-  /* Hero section mobile */
+  /* Hero section mobile - adjust for new header */
   .hero {
     min-height: 90vh;
-    padding-top: 6rem;
+    padding-top: 80px; /* Extra padding for mobile header */
   }
   .hero-content {
     padding-left: 5%;
@@ -3048,5 +3048,213 @@ body {
   img {
     max-width: 100%;
     height: auto;
+  }
+}
+
+/* ============================================================
+   MOBILE HEADER - BRAND NEW DESIGN - HIGH PRIORITY
+   ============================================================ */
+
+.mobile-nav-header {
+  display: none; /* Hidden by default */
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000; /* Higher than everything */
+  background: #f5f0e8 !important; /* Solid cream background */
+  border-bottom: 3px solid #b8965a !important; /* Thick gold border */
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2) !important;
+}
+
+.mobile-nav-content {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem 5%;
+  min-height: 60px;
+}
+
+.mobile-nav-logo {
+  font-family: var(--font-caps);
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: #5c4a32 !important; /* Dark bark color */
+  text-decoration: none;
+  letter-spacing: 0.1em;
+}
+
+.mobile-nav-logo span {
+  color: #c9857a !important; /* Rose color */
+}
+
+.mobile-nav-actions {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.mobile-nav-cart-btn {
+  position: relative;
+  background: #c9857a !important; /* Bright rose */
+  color: white !important;
+  border: none;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.4rem;
+  cursor: pointer;
+  box-shadow: 0 3px 10px rgba(201, 133, 122, 0.4);
+  transition: all 0.2s ease;
+}
+
+.mobile-nav-cart-btn:hover {
+  background: #b8756a !important;
+  transform: scale(1.1);
+  box-shadow: 0 4px 15px rgba(201, 133, 122, 0.6);
+}
+
+.mobile-cart-count {
+  position: absolute;
+  top: -5px;
+  right: -5px;
+  background: #b8965a !important; /* Gold */
+  color: #1a1a1a !important; /* Deep color */
+  font-size: 0.8rem;
+  font-weight: 700;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid #f5f0e8;
+  animation: mobilePulse 0.6s ease-out;
+}
+
+@keyframes mobilePulse {
+  0% {
+    transform: scale(0.8);
+    opacity: 0.8;
+  }
+  50% {
+    transform: scale(1.2);
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+.mobile-menu-btn {
+  background: #5c4a32 !important; /* Dark bark */
+  border: 2px solid #b8965a !important; /* Gold border */
+  border-radius: 8px;
+  padding: 0.8rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  width: 50px;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.mobile-menu-btn:hover {
+  background: #b8965a !important;
+  border-color: #5c4a32 !important;
+  transform: scale(1.05);
+}
+
+.hamburger {
+  width: 24px;
+  height: 18px;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.hamburger span {
+  width: 100%;
+  height: 3px;
+  background: #f5f0e8 !important; /* Cream color */
+  transition: all 0.3s ease;
+  border-radius: 2px;
+}
+
+.hamburger.open span:nth-child(1) {
+  transform: rotate(45deg) translate(6px, 6px);
+}
+
+.hamburger.open span:nth-child(2) {
+  opacity: 0;
+}
+
+.hamburger.open span:nth-child(3) {
+  transform: rotate(-45deg) translate(6px, -6px);
+}
+
+.mobile-menu {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  background: #f5f0e8 !important;
+  border-bottom: 3px solid #b8965a !important;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
+  z-index: 999;
+}
+
+.mobile-nav-links {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.mobile-nav-links li {
+  border-bottom: 1px solid rgba(184, 150, 90, 0.2);
+}
+
+.mobile-nav-links a {
+  display: block;
+  padding: 1.2rem 5%;
+  color: #5c4a32 !important;
+  text-decoration: none;
+  font-size: 1.1rem;
+  font-weight: 500;
+  transition: all 0.2s ease;
+  min-height: 50px;
+  display: flex;
+  align-items: center;
+}
+
+.mobile-nav-links a:hover,
+.mobile-nav-links a.active {
+  background: rgba(184, 150, 90, 0.1) !important;
+  color: #c9857a !important;
+  font-weight: 600;
+  border-left: 4px solid #b8965a;
+}
+
+/* Show mobile header only on mobile devices */
+@media (max-width: 768px) {
+  .mobile-nav-header {
+    display: block !important;
+  }
+
+  /* Hide desktop nav on mobile */
+  .desktop-nav {
+    display: none !important;
+  }
+}
+
+/* Hide mobile header on desktop */
+@media (min-width: 769px) {
+  .mobile-nav-header {
+    display: none !important;
   }
 }
