@@ -1,13 +1,13 @@
 "use client";
 
-import { useState } from "react";
 import CustomCursor from '../../components/CustomCursor';
 import Navigation from '../../components/Navigation';
 import ProductGrid from '../../components/ProductGrid';
 import ShoppingCart from '../../components/ShoppingCart';
+import { useCart } from '../../components/CartContext';
 
 export default function Produits() {
-  const [cartOpen, setCartOpen] = useState(false);
+  const { isCartOpen, setIsCartOpen } = useCart();
 
   return (
     <>
@@ -18,17 +18,9 @@ export default function Produits() {
           <div className="section-label">Catalogue</div>
           <h1 className="section-title">Notre <em>collection</em></h1>
         </div>
-        <div className="products-controls">
-          <button
-            className="cart-toggle-btn"
-            onClick={() => setCartOpen(true)}
-          >
-            🛒 Panier
-          </button>
-        </div>
         <ProductGrid showFilters={true} />
       </section>
-      <ShoppingCart isOpen={cartOpen} onClose={() => setCartOpen(false)} />
+      <ShoppingCart isOpen={isCartOpen} onClose={() => setIsCartOpen(false)} />
     </>
   );
 }

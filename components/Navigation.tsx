@@ -4,11 +4,13 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
 import { usePathname } from "next/navigation";
+import { useCart } from "./CartContext";
 
 export default function Navigation() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const pathname = usePathname();
+  const { totalItems, setIsCartOpen } = useCart();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -106,6 +108,19 @@ export default function Navigation() {
         ))}
       </ul>
 
+      {/* Cart Button */}
+      <motion.button
+        className="nav-cart-btn"
+        onClick={() => setIsCartOpen(true)}
+        whileHover={{ scale: 1.05 }}
+        whileTap={{ scale: 0.95 }}
+      >
+        🛒
+        {totalItems > 0 && (
+          <span className="cart-count">{totalItems}</span>
+        )}
+      </motion.button>
+
       {/* Mobile Menu Button */}
       <button
         className="mobile-menu-btn"
@@ -151,6 +166,23 @@ export default function Navigation() {
                   </Link>
                 </motion.li>
               ))}
+              <motion.li
+                variants={linkVariants}
+                whileTap="tap"
+              >
+                <button
+                  className="nav-cart-btn mobile-cart-btn"
+                  onClick={() => {
+                    setIsCartOpen(true);
+                    closeMobileMenu();
+                  }}
+                >
+                  🛒 Panier
+                  {totalItems > 0 && (
+                    <span className="cart-count">{totalItems}</span>
+                  )}
+                </button>
+              </motion.li>
             </ul>
           </motion.div>
         )}
