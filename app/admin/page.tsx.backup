@@ -90,7 +90,6 @@ const initialCategories: Category[] = [
     displayName: "Plants Greffes",
     emoji: "🌱",
     background: "linear-gradient(135deg, #4CAF50, #81C784)",
-    image: "https://images.unsplash.com/photo-1416879595882-3373a0480b5b?auto=format&fit=crop&w=800&q=80",
   },
   {
     id: "plants-traditionnels",
@@ -98,7 +97,6 @@ const initialCategories: Category[] = [
     displayName: "Plants Traditionnels",
     emoji: "🍅",
     background: "linear-gradient(135deg, #FF5722, #FF8A65)",
-    image: "https://images.unsplash.com/photo-1546470427-e9b3a5db3b2e?auto=format&fit=crop&w=800&q=80",
   },
   {
     id: "suite",
@@ -106,7 +104,6 @@ const initialCategories: Category[] = [
     displayName: "Suite",
     emoji: "🍈",
     background: "linear-gradient(135deg, #FF9800, #FFB74D)",
-    image: "https://images.unsplash.com/photo-1571771019784-3ff35f4f4277?auto=format&fit=crop&w=800&q=80",
   },
   {
     id: "aromatiques-pot-10-5",
@@ -114,7 +111,6 @@ const initialCategories: Category[] = [
     displayName: "Aromatiques Pot 10,5",
     emoji: "🌿",
     background: "linear-gradient(135deg, #8BC34A, #AED581)",
-    image: "https://images.unsplash.com/photo-1618375569909-3c8616cf09ae?auto=format&fit=crop&w=800&q=80",
   },
   {
     id: "aromatiques-pot-15",
@@ -122,7 +118,6 @@ const initialCategories: Category[] = [
     displayName: "Aromatiques Pot 15",
     emoji: "🌱",
     background: "linear-gradient(135deg, #4CAF50, #81C784)",
-    image: "https://images.unsplash.com/photo-1592150621744-aca64f48394a?auto=format&fit=crop&w=800&q=80",
   },
   {
     id: "aromatiques-pot-3-litres",
@@ -130,7 +125,6 @@ const initialCategories: Category[] = [
     displayName: "Aromatiques Pot 3 Litres",
     emoji: "🌿",
     background: "linear-gradient(135deg, #388E3C, #66BB6A)",
-    image: "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?auto=format&fit=crop&w=800&q=80",
   },
   {
     id: "divers",
@@ -138,7 +132,6 @@ const initialCategories: Category[] = [
     displayName: "Divers",
     emoji: "🥕",
     background: "linear-gradient(135deg, #795548, #A1887F)",
-    image: "https://images.unsplash.com/photo-1449339854873-750e6913301b?auto=format&fit=crop&w=800&q=80",
   },
   {
     id: "oignons",
@@ -146,7 +139,6 @@ const initialCategories: Category[] = [
     displayName: "Oignons",
     emoji: "🧅",
     background: "linear-gradient(135deg, #FFEB3B, #FFF176)",
-    image: "https://images.unsplash.com/photo-1582515073490-39981397c445?auto=format&fit=crop&w=800&q=80",
   },
 ];
 
@@ -244,7 +236,7 @@ export default function Admin() {
   // Product functions
   const handleProductSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-
+    
     if (!productFormData.name.trim() || !productFormData.desc.trim()) {
       setNotification({
         message: "⚠ Veuillez remplir tous les champs obligatoires.",
@@ -312,7 +304,6 @@ export default function Admin() {
   };
 
   const deleteProduct = (index: number) => {
-    if (!confirm("Supprimer ce produit ?")) return;
     const updatedProducts = products.filter((_, i) => i !== index);
     syncProductsStorage(updatedProducts);
     setNotification({
@@ -325,7 +316,7 @@ export default function Admin() {
   // Category functions
   const handleCategorySubmit = (e: React.FormEvent) => {
     e.preventDefault();
-
+    
     if (!categoryFormData.name.trim() || !categoryFormData.displayName.trim()) {
       setNotification({
         message: "⚠ Veuillez remplir tous les champs obligatoires.",
@@ -337,7 +328,7 @@ export default function Admin() {
 
     const newCategory: Category = {
       id: editCategoryIndex >= 0 ? categories[editCategoryIndex].id : categoryFormData.name.toLowerCase().replace(/\s+/g, '-'),
-      name: categoryFormData.name,
+      name: categoryFormData.name.toLowerCase().replace(/\s+/g, '-'),
       displayName: categoryFormData.displayName,
       emoji: categoryFormData.emoji,
       background: categoryFormData.background,
@@ -390,23 +381,422 @@ export default function Admin() {
   };
 
   const deleteCategory = (index: number) => {
-    const category = categories[index];
-    const productsInCategory = products.filter(p => p.cat === category.id);
-
-    if (productsInCategory.length > 0) {
+    const categoryToDelete = categories[index];
+    
+    // Check if category has products
+    const hasProducts = products.some(p => p.cat === categoryToDelete.id);
+    if (hasProducts) {
       setNotification({
-        message: `⚠ Impossible de supprimer cette catégorie car elle contient ${productsInCategory.length} produit(s).`,
+        message: "⚠ Impossible de supprimer cette catégorie car elle contient des produits.",
         type: "error",
         show: true,
       });
       return;
     }
 
-    if (!confirm("Supprimer cette catégorie ?")) return;
     const updatedCategories = categories.filter((_, i) => i !== index);
     syncCategoriesStorage(updatedCategories);
     setNotification({
       message: "🗑️ Catégorie supprimée avec succès !",
+      type: "success",
+      show: true,
+    });
+  };
+
+  return (
+    <>
+      <CustomCursor />
+      <Navigation />
+      <Notification
+        message={notification.message}
+        type={notification.type}
+        show={notification.show}
+        onClose={() => setNotification({ ...notification, show: false })}
+      />
+      <section className="admin-section">
+        {!isLoggedIn ? (
+          <div className="admin-login">
+            <h2
+              style={{
+                fontSize: "2.5rem",
+                fontWeight: 300,
+                color: "var(--cream)",
+                marginBottom: "0.5rem",
+              }}
+            >
+              Espace <em style={{ color: "var(--rose)" }}>Administrateur</em>
+            </h2>
+            <p
+              style={{
+                fontSize: "0.78rem",
+                color: "rgba(245,240,232,0.35)",
+                marginBottom: "0",
+              }}
+            >
+              Connexion requise pour accéder au tableau de bord.
+            </p>
+            <div className="admin-login-box">
+              <h3>Connexion sécurisée</h3>
+              <p style={{ color: "var(--mid)", marginBottom: "0.8rem" }}>
+                Utilisateur : <strong>admin</strong> / Mot de passe :{" "}
+                <strong>admin2024</strong>
+              </p>
+              <div className="admin-field">
+                <label>Identifiant</label>
+                <input type="text" id="admin-user" placeholder="admin" />
+              </div>
+              <div className="admin-field">
+                <label>Mot de passe</label>
+                <input type="password" id="admin-pass" placeholder="••••••••" />
+              </div>
+              <button className="btn-login" onClick={handleLogin}>
+                Accéder au tableau de bord
+              </button>
+            </div>
+          </div>
+        ) : (
+          <div className="admin-dashboard">
+            <div className="admin-topbar">
+              <h2>✦ Tableau de bord — AlbernyDavid</h2>
+              <button className="btn-logout" onClick={handleLogout}>
+                Déconnexion
+              </button>
+            </div>
+
+            {/* Onglets */}
+            <div className="admin-tabs">
+              <button
+                className={`admin-tab ${activeTab === "products" ? "active" : ""}`}
+                onClick={() => setActiveTab("products")}
+              >
+                📦 Produits ({products.length})
+              </button>
+              <button
+                className={`admin-tab ${activeTab === "categories" ? "active" : ""}`}
+                onClick={() => setActiveTab("categories")}
+              >
+                📂 Catégories ({categories.length})
+              </button>
+            </div>
+
+            <div className="admin-layout">
+              {/* Formulaire Produits */}
+              {activeTab === "products" && (
+                <>
+                  <div className="admin-form-panel">
+                    <div className="admin-form-title">
+                      {editIndex >= 0 ? "Modifier" : "Ajouter"} un produit
+                    </div>
+                    <form className="admin-form" onSubmit={handleProductSubmit}>
+                      <div>
+                        <label>Catégorie</label>
+                        <select
+                          value={productFormData.cat}
+                          onChange={(e) =>
+                            setProductFormData((prev) => ({
+                              ...prev,
+                              cat: e.target.value,
+                            }))
+                          }
+                        >
+                          {categories.map((cat) => (
+                            <option key={cat.id} value={cat.id}>
+                              {cat.emoji} {cat.displayName}
+                            </option>
+                          ))}
+                        </select>
+                      </div>
+                      <div>
+                        <label>Nom du produit *</label>
+                        <input
+                          type="text"
+                          value={productFormData.name}
+                          onChange={(e) =>
+                            setProductFormData((prev) => ({
+                              ...prev,
+                              name: e.target.value,
+                            }))
+                          }
+                          placeholder="Ex: Tomate cobra"
+                          required
+                        />
+                      </div>
+                      <div>
+                        <label>Description *</label>
+                        <textarea
+                          value={productFormData.desc}
+                          onChange={(e) =>
+                            setProductFormData((prev) => ({
+                              ...prev,
+                              desc: e.target.value,
+                            }))
+                          }
+                          placeholder="Décrivez ce produit..."
+                          required
+                        />
+                      </div>
+                      <div>
+                        <label>Couleur (hex)</label>
+                        <input
+                          type="color"
+                          value={productFormData.color}
+                          onChange={(e) =>
+                            setProductFormData((prev) => ({
+                              ...prev,
+                              color: e.target.value,
+                            }))
+                          }
+                        />
+                      </div>
+                      <div>
+                        <label>Image URL</label>
+                        <input
+                          type="url"
+                          value={productFormData.img}
+                          onChange={(e) =>
+                            setProductFormData((prev) => ({
+                              ...prev,
+                              img: e.target.value,
+                            }))
+                          }
+                          placeholder="https://..."
+                        />
+                      </div>
+                      <div>
+                        <label>Prix (€)</label>
+                        <input
+                          type="number"
+                          min="0"
+                          step="0.01"
+                          value={productFormData.price}
+                          onChange={(e) =>
+                            setProductFormData((prev) => ({
+                              ...prev,
+                              price: parseFloat(e.target.value) || 0,
+                            }))
+                          }
+                        />
+                      </div>
+                      <div className="admin-form-buttons">
+                        <button type="submit" className="btn-primary">
+                          {editIndex >= 0 ? "Modifier" : "Ajouter"} le produit
+                        </button>
+                        {editIndex >= 0 && (
+                          <button type="button" className="btn-secondary" onClick={resetProductForm}>
+                            Annuler
+                          </button>
+                        )}
+                      </div>
+                    </form>
+                  </div>
+
+                  <div className="admin-list-panel">
+                    <div className="admin-list-title">Produits existants</div>
+                    <div className="admin-list">
+                      {products.map((product, index) => (
+                        <div key={product.id} className="admin-list-item">
+                          <div className="admin-list-info">
+                            <strong>{product.name}</strong>
+                            <span>{categories.find(c => c.id === product.cat)?.displayName || product.cat}</span>
+                            <span>{product.price}€</span>
+                          </div>
+                          <div className="admin-list-actions">
+                            <button onClick={() => editProduct(index)}>✏️</button>
+                            <button onClick={() => deleteProduct(index)}>🗑️</button>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                </>
+              )}
+
+              {/* Formulaire Catégories */}
+              {activeTab === "categories" && (
+                <>
+                  <div className="admin-form-panel">
+                    <div className="admin-form-title">
+                      {editCategoryIndex >= 0 ? "Modifier" : "Ajouter"} une catégorie
+                    </div>
+                    <form className="admin-form" onSubmit={handleCategorySubmit}>
+                      <div>
+                        <label>Nom technique *</label>
+                        <input
+                          type="text"
+                          value={categoryFormData.name}
+                          onChange={(e) =>
+                            setCategoryFormData((prev) => ({
+                              ...prev,
+                              name: e.target.value,
+                            }))
+                          }
+                          placeholder="plants-greffes"
+                          required
+                        />
+                      </div>
+                      <div>
+                        <label>Nom d'affichage *</label>
+                        <input
+                          type="text"
+                          value={categoryFormData.displayName}
+                          onChange={(e) =>
+                            setCategoryFormData((prev) => ({
+                              ...prev,
+                              displayName: e.target.value,
+                            }))
+                          }
+                          placeholder="Plants Greffes"
+                          required
+                        />
+                      </div>
+                      <div>
+                        <label>Emoji</label>
+                        <input
+                          type="text"
+                          value={categoryFormData.emoji}
+                          onChange={(e) =>
+                            setCategoryFormData((prev) => ({
+                              ...prev,
+                              emoji: e.target.value,
+                            }))
+                          }
+                          placeholder="🌱"
+                        />
+                      </div>
+                      <div>
+                        <label>Arrière-plan (CSS)</label>
+                        <input
+                          type="text"
+                          value={categoryFormData.background}
+                          onChange={(e) =>
+                            setCategoryFormData((prev) => ({
+                              ...prev,
+                              background: e.target.value,
+                            }))
+                          }
+                          placeholder="linear-gradient(135deg, #4CAF50, #81C784)"
+                        />
+                      </div>
+                      <div>
+                        <label>Image de catégorie (URL)</label>
+                        <input
+                          type="url"
+                          value={categoryFormData.image}
+                          onChange={(e) =>
+                            setCategoryFormData((prev) => ({
+                              ...prev,
+                              image: e.target.value,
+                            }))
+                          }
+                          placeholder="https://..."
+                        />
+                      </div>
+                      <div className="admin-form-buttons">
+                        <button type="submit" className="btn-primary">
+                          {editCategoryIndex >= 0 ? "Modifier" : "Ajouter"} la catégorie
+                        </button>
+                        {editCategoryIndex >= 0 && (
+                          <button type="button" className="btn-secondary" onClick={resetCategoryForm}>
+                            Annuler
+                          </button>
+                        )}
+                      </div>
+                    </form>
+                  </div>
+
+                  <div className="admin-list-panel">
+                    <div className="admin-list-title">Catégories existantes</div>
+                    <div className="admin-list">
+                      {categories.map((category, index) => (
+                        <div key={category.id} className="admin-list-item">
+                          <div className="admin-list-info">
+                            <strong>{category.emoji} {category.displayName}</strong>
+                            <span>{category.name}</span>
+                            {category.image && <span>📷 Image définie</span>}
+                          </div>
+                          <div className="admin-list-actions">
+                            <button onClick={() => editCategory(index)}>✏️</button>
+                            <button onClick={() => deleteCategory(index)}>🗑️</button>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                </>
+              )}
+            </div>
+          </div>
+        )}
+      </section>
+    </>
+  );
+}
+
+  const saveProduct = () => {
+    if (!formData.name.trim()) {
+      setNotification({
+        message: "⚠ Le titre est obligatoire.",
+        type: "error",
+        show: true,
+      });
+      return;
+    }
+
+    if (editIndex >= 0) {
+      const updatedProducts = [...products];
+      updatedProducts[editIndex] = {
+        ...updatedProducts[editIndex],
+        ...formData,
+      };
+      syncProductsStorage(updatedProducts);
+      setNotification({
+        message: "✦ Produit mis à jour avec succès.",
+        type: "success",
+        show: true,
+      });
+    } else {
+      const newProduct: Product = {
+        id: products.length ? Math.max(...products.map((p) => p.id)) + 1 : 1,
+        ...formData,
+      };
+      syncProductsStorage([...products, newProduct]);
+      setNotification({
+        message: "✦ Produit ajouté avec succès.",
+        type: "success",
+        show: true,
+      });
+    }
+
+    setFormData({
+      name: "",
+      cat: "fleurs",
+      desc: "",
+      color: "#c9857a",
+      img: "",
+      price: 0,
+    });
+    setEditIndex(-1);
+  };
+
+  const editProduct = (index: number) => {
+    const product = products[index];
+    setFormData({
+      name: product.name,
+      cat: product.cat,
+      desc: product.desc,
+      color: product.color,
+      img: product.img || "",
+      price: product.price,
+    });
+    setEditIndex(index);
+  };
+
+  const deleteProduct = (index: number) => {
+    if (!confirm("Supprimer ce produit ?")) return;
+    const updatedProducts = products.filter((_, i) => i !== index);
+    syncProductsStorage(updatedProducts);
+    setNotification({
+      message: "✦ Produit supprimé.",
       type: "success",
       show: true,
     });
@@ -501,28 +891,27 @@ export default function Admin() {
                   <div>
                     <label>Catégorie</label>
                     <select
-                      value={productFormData.cat}
+                      value={formData.cat}
                       onChange={(e) =>
-                        setProductFormData((prev) => ({
+                        setFormData((prev) => ({
                           ...prev,
                           cat: e.target.value,
                         }))
                       }
                     >
-                      {categories.map((cat) => (
-                        <option key={cat.id} value={cat.id}>
-                          {cat.emoji} {cat.displayName}
-                        </option>
-                      ))}
+                      <option value="fleurs">🌸 Fleurs</option>
+                      <option value="fruits">🍊 Fruits</option>
+                      <option value="arbres">🌳 Arbres</option>
+                      <option value="herbes">🌿 Herbes</option>
                     </select>
                   </div>
                   <div>
                     <label>Titre du produit</label>
                     <input
                       type="text"
-                      value={productFormData.name}
+                      value={formData.name}
                       onChange={(e) =>
-                        setProductFormData((prev) => ({
+                        setFormData((prev) => ({
                           ...prev,
                           name: e.target.value,
                         }))
@@ -533,9 +922,9 @@ export default function Admin() {
                   <div>
                     <label>Description</label>
                     <textarea
-                      value={productFormData.desc}
+                      value={formData.desc}
                       onChange={(e) =>
-                        setProductFormData((prev) => ({
+                        setFormData((prev) => ({
                           ...prev,
                           desc: e.target.value,
                         }))
@@ -547,9 +936,9 @@ export default function Admin() {
                     <label>Prix (€)</label>
                     <input
                       type="number"
-                      value={productFormData.price}
+                      value={formData.price}
                       onChange={(e) =>
-                        setProductFormData((prev) => ({
+                        setFormData((prev) => ({
                           ...prev,
                           price: parseFloat(e.target.value) || 0,
                         }))
@@ -564,19 +953,13 @@ export default function Admin() {
                     <div className="color-row">
                       <input
                         type="color"
-                        value={productFormData.color}
-                        onChange={(e) => setProductFormData((prev) => ({
-                          ...prev,
-                          color: e.target.value,
-                        }))}
+                        value={formData.color}
+                        onChange={(e) => syncColor(e.target.value)}
                       />
                       <input
                         type="text"
-                        value={productFormData.color}
-                        onChange={(e) => setProductFormData((prev) => ({
-                          ...prev,
-                          color: e.target.value,
-                        }))}
+                        value={formData.color}
+                        onChange={(e) => syncColorText(e.target.value)}
                         placeholder="#c9857a"
                       />
                     </div>
@@ -591,7 +974,7 @@ export default function Admin() {
                         if (file) {
                           const reader = new FileReader();
                           reader.onload = (event) => {
-                            setProductFormData((prev) => ({
+                            setFormData((prev) => ({
                               ...prev,
                               img: event.target?.result as string,
                             }));
@@ -600,7 +983,7 @@ export default function Admin() {
                         }
                       }}
                     />
-                    {productFormData.img && (
+                    {formData.img && (
                       <div
                         style={{
                           marginTop: "0.5rem",
@@ -612,10 +995,10 @@ export default function Admin() {
                       </div>
                     )}
                   </div>
-                  {productFormData.img && (
+                  {formData.img && (
                     <div style={{ margin: "1rem 0", textAlign: "center" }}>
                       <img
-                        src={productFormData.img}
+                        src={formData.img}
                         alt="Aperçu"
                         style={{
                           maxWidth: "100%",
@@ -630,7 +1013,7 @@ export default function Admin() {
                       />
                     </div>
                   )}
-                  <button className="btn-add" onClick={() => handleProductSubmit({ preventDefault: () => {} } as any)}>
+                  <button className="btn-add" onClick={saveProduct}>
                     {editIndex >= 0 ? "Mettre à jour" : "Ajouter le produit"}
                   </button>
                 </div>
@@ -658,11 +1041,11 @@ export default function Admin() {
                           className="admin-prod-color"
                           style={{
                             background:
-                              p.color || categories.find(c => c.id === p.cat)?.background || "#b8965a",
+                              p.color || catColors[p.cat] || "#b8965a",
                           }}
                         ></div>
                         <div className="admin-prod-name">{p.name}</div>
-                        <div className="admin-prod-cat">{categories.find(c => c.id === p.cat)?.displayName || p.cat}</div>
+                        <div className="admin-prod-cat">{p.cat}</div>
                         <div className="admin-prod-actions">
                           <button
                             className="btn-edit"
