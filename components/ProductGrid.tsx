@@ -1166,40 +1166,17 @@ export default function ProductGrid({
     const savedProducts = localStorage.getItem("AlbernyDavidProducts");
     const savedCategories = localStorage.getItem("AlbernyDavidCategories");
     
-    if (savedProducts) {
-      try {
-        const parsed = JSON.parse(savedProducts);
-        // Check if the saved products have the new categories
-        const hasNewCategories = parsed.some((p: Product) => 
-          ['plants-greffes', 'plants-traditionnels', 'suite', 'aromatiques-pot-10-5', 'aromatiques-pot-15', 'aromatiques-pot-3-litres', 'divers', 'oignons'].includes(p.cat)
-        );
-        if (hasNewCategories) {
-          setProducts(parsed);
-        } else {
-          // Old data, use new products
-          setProducts(initialProducts);
-          localStorage.setItem("AlbernyDavidProducts", JSON.stringify(initialProducts));
-        }
-      } catch {
-        setProducts(initialProducts);
-        localStorage.setItem("AlbernyDavidProducts", JSON.stringify(initialProducts));
-      }
-    } else {
-      setProducts(initialProducts);
-      localStorage.setItem("AlbernyDavidProducts", JSON.stringify(initialProducts));
-    }
-
-    if (savedCategories) {
-      try {
-        setCategories(JSON.parse(savedCategories));
-      } catch {
-        setCategories(initialCategories);
-        localStorage.setItem("AlbernyDavidCategories", JSON.stringify(initialCategories));
-      }
-    } else {
-      setCategories(initialCategories);
-      localStorage.setItem("AlbernyDavidCategories", JSON.stringify(initialCategories));
-    }
+    // Force update to new structure - clear old data
+    localStorage.removeItem("AlbernyDavidProducts");
+    localStorage.removeItem("AlbernyDavidCategories");
+    
+    // Always use the new initial data
+    setProducts(initialProducts);
+    setCategories(initialCategories);
+    
+    // Save the new data
+    localStorage.setItem("AlbernyDavidProducts", JSON.stringify(initialProducts));
+    localStorage.setItem("AlbernyDavidCategories", JSON.stringify(initialCategories));
   }, []);
 
   useEffect(() => {
