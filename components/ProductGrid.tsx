@@ -958,10 +958,25 @@ export default function ProductGrid({
     const saved = localStorage.getItem("AlbernyDavidProducts");
     if (saved) {
       try {
-        setProducts(JSON.parse(saved));
+        const parsed = JSON.parse(saved);
+        // Check if the saved products have the new categories
+        const hasNewCategories = parsed.some((p: Product) => 
+          ['plants-greffes', 'plants-traditionnels', 'suite', 'aromatiques-pot-10-5', 'aromatiques-pot-15', 'aromatiques-pot-3-litres', 'divers', 'oignons'].includes(p.cat)
+        );
+        if (hasNewCategories) {
+          setProducts(parsed);
+        } else {
+          // Old data, use new products
+          setProducts(initialProducts);
+          localStorage.setItem("AlbernyDavidProducts", JSON.stringify(initialProducts));
+        }
       } catch {
         setProducts(initialProducts);
+        localStorage.setItem("AlbernyDavidProducts", JSON.stringify(initialProducts));
       }
+    } else {
+      setProducts(initialProducts);
+      localStorage.setItem("AlbernyDavidProducts", JSON.stringify(initialProducts));
     }
   }, []);
 

@@ -17,6 +17,14 @@ const catBg: Record<string, string> = {
   fruits: 'linear-gradient(160deg,rgba(212,184,122,0.5),rgba(184,150,90,0.3))',
   arbres: 'linear-gradient(160deg,rgba(122,140,110,0.5),rgba(168,184,154,0.3))',
   herbes: 'linear-gradient(160deg,rgba(154,128,192,0.4),rgba(180,160,210,0.25))',
+  'plants-greffes': 'linear-gradient(160deg,rgba(200,150,100,0.5),rgba(180,130,80,0.3))',
+  'plants-traditionnels': 'linear-gradient(160deg,rgba(150,200,100,0.5),rgba(130,180,80,0.3))',
+  suite: 'linear-gradient(160deg,rgba(100,150,200,0.5),rgba(80,130,180,0.3))',
+  'aromatiques-pot-10-5': 'linear-gradient(160deg,rgba(200,100,150,0.5),rgba(180,80,130,0.3))',
+  'aromatiques-pot-15': 'linear-gradient(160deg,rgba(150,100,200,0.5),rgba(130,80,180,0.3))',
+  'aromatiques-pot-3-litres': 'linear-gradient(160deg,rgba(100,200,150,0.5),rgba(80,180,130,0.3))',
+  divers: 'linear-gradient(160deg,rgba(200,200,100,0.5),rgba(180,180,80,0.3))',
+  oignons: 'linear-gradient(160deg,rgba(150,150,150,0.5),rgba(130,130,130,0.3))',
 };
 
 const catEmoji: Record<string, string> = {
@@ -24,6 +32,14 @@ const catEmoji: Record<string, string> = {
   fruits: '🍊',
   arbres: '🌳',
   herbes: '🌿',
+  'plants-greffes': '🌱',
+  'plants-traditionnels': '🍅',
+  suite: '🍈',
+  'aromatiques-pot-10-5': '🌿',
+  'aromatiques-pot-15': '🌿',
+  'aromatiques-pot-3-litres': '🌿',
+  divers: '🥕',
+  oignons: '🧅',
 };
 
 export default function ProductCard({ product }: ProductCardProps) {
