@@ -1223,10 +1223,10 @@ export default function ProductGrid({
               }
             }
           }
-          // Si c'est une catégorie principale avec sous-catégories, ne rien afficher
+          // Si c'est une catégorie principale avec sous-catégories, afficher TOUTES les sous-catégories
           const mainCategory = categories.find(cat => cat.id === activeFilter);
           if (mainCategory?.subcategories) {
-            return false;
+            return mainCategory.subcategories.some(sub => p.cat === sub.id);
           }
           // Sinon, filtrer normalement
           return p.cat === activeFilter;
