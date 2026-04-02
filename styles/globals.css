@@ -2194,6 +2194,21 @@ section {
   border: 1px solid rgba(255, 255, 255, 0.06);
   padding: 2rem;
 }
+
+/* Admin search bar */
+.admin-search-bar {
+  margin-bottom: 1.5rem;
+}
+
+.admin-search-bar input::placeholder {
+  color: rgba(245, 240, 232, 0.4);
+}
+
+.admin-search-bar input:focus {
+  border-color: var(--gold);
+  box-shadow: 0 0 0 2px rgba(184, 150, 90, 0.1);
+}
+
 .admin-products-list {
   display: flex;
   flex-direction: column;

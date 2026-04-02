@@ -184,6 +184,9 @@ export default function Admin() {
     image: "",
   });
 
+  const [productSearchTerm, setProductSearchTerm] = useState("");
+  const [categorySearchTerm, setCategorySearchTerm] = useState("");
+
   useEffect(() => {
     // Check if already logged in
     const loggedIn = localStorage.getItem("adminLoggedIn") === "true";
@@ -416,6 +419,27 @@ export default function Admin() {
     setNotification((prev) => ({ ...prev, show: false }));
   };
 
+  // Search functions
+  const normalizeText = (text: string) => {
+    return text
+      .toLowerCase()
+      .normalize("NFD")
+      .replace(/[\u0300-\u036f]/g, "");
+  };
+
+  const filteredProducts = products.filter((p) =>
+    productSearchTerm === "" ||
+    normalizeText(p.name).includes(normalizeText(productSearchTerm)) ||
+    normalizeText(p.desc).includes(normalizeText(productSearchTerm)) ||
+    normalizeText(categories.find(c => c.id === p.cat)?.displayName || "").includes(normalizeText(productSearchTerm))
+  );
+
+  const filteredCategories = categories.filter((c) =>
+    categorySearchTerm === "" ||
+    normalizeText(c.displayName).includes(normalizeText(categorySearchTerm)) ||
+    normalizeText(c.name).includes(normalizeText(categorySearchTerm))
+  );
+
   return (
     <>
       <CustomCursor />
@@ -492,198 +516,406 @@ export default function Admin() {
                 Déconnexion
               </button>
             </div>
+
+            {/* Onglets */}
+            <div className="admin-tabs">
+              <button
+                className={`admin-tab ${activeTab === "products" ? "active" : ""}`}
+                onClick={() => setActiveTab("products")}
+              >
+                📦 Produits ({products.length})
+              </button>
+              <button
+                className={`admin-tab ${activeTab === "categories" ? "active" : ""}`}
+                onClick={() => setActiveTab("categories")}
+              >
+                🏷️ Catégories ({categories.length})
+              </button>
+            </div>
+
             <div className="admin-layout">
-              <div className="admin-form-panel">
-                <div className="admin-form-title">
-                  Ajouter / Modifier un produit
-                </div>
-                <div className="admin-form">
-                  <div>
-                    <label>Catégorie</label>
-                    <select
-                      value={productFormData.cat}
-                      onChange={(e) =>
-                        setProductFormData((prev) => ({
-                          ...prev,
-                          cat: e.target.value,
-                        }))
-                      }
-                    >
-                      {categories.map((cat) => (
-                        <option key={cat.id} value={cat.id}>
-                          {cat.emoji} {cat.displayName}
-                        </option>
-                      ))}
-                    </select>
-                  </div>
-                  <div>
-                    <label>Titre du produit</label>
-                    <input
-                      type="text"
-                      value={productFormData.name}
-                      onChange={(e) =>
-                        setProductFormData((prev) => ({
-                          ...prev,
-                          name: e.target.value,
-                        }))
-                      }
-                      placeholder="Ex: Rose de Damas"
-                    />
-                  </div>
-                  <div>
-                    <label>Description</label>
-                    <textarea
-                      value={productFormData.desc}
-                      onChange={(e) =>
-                        setProductFormData((prev) => ({
-                          ...prev,
-                          desc: e.target.value,
-                        }))
-                      }
-                      placeholder="Décrivez ce produit…"
-                    ></textarea>
-                  </div>
-                  <div>
-                    <label>Prix (€)</label>
-                    <input
-                      type="number"
-                      value={productFormData.price}
-                      onChange={(e) =>
-                        setProductFormData((prev) => ({
-                          ...prev,
-                          price: parseFloat(e.target.value) || 0,
-                        }))
-                      }
-                      placeholder="0"
-                      min="0"
-                      step="0.01"
-                    />
-                  </div>
-                  <div>
-                    <label>Couleur associée</label>
-                    <div className="color-row">
-                      <input
-                        type="color"
-                        value={productFormData.color}
-                        onChange={(e) => setProductFormData((prev) => ({
-                          ...prev,
-                          color: e.target.value,
-                        }))}
-                      />
-                      <input
-                        type="text"
-                        value={productFormData.color}
-                        onChange={(e) => setProductFormData((prev) => ({
-                          ...prev,
-                          color: e.target.value,
-                        }))}
-                        placeholder="#c9857a"
-                      />
+              {activeTab === "products" ? (
+                <>
+                  {/* Section Produits */}
+                  <div className="admin-form-panel">
+                    <div className="admin-form-title">
+                      Ajouter / Modifier un produit
                     </div>
-                  </div>
-                  <div>
-                    <label>Image du produit</label>
-                    <input
-                      type="file"
-                      accept="image/*"
-                      onChange={(e) => {
-                        const file = e.target.files?.[0];
-                        if (file) {
-                          const reader = new FileReader();
-                          reader.onload = (event) => {
+                    <div className="admin-form">
+                      <div>
+                        <label>Catégorie</label>
+                        <select
+                          value={productFormData.cat}
+                          onChange={(e) =>
                             setProductFormData((prev) => ({
                               ...prev,
-                              img: event.target?.result as string,
-                            }));
-                          };
-                          reader.readAsDataURL(file);
-                        }
-                      }}
-                    />
-                    {productFormData.img && (
-                      <div
-                        style={{
-                          marginTop: "0.5rem",
-                          fontSize: "0.8rem",
-                          color: "rgba(245,240,232,0.6)",
-                        }}
-                      >
-                        Image sélectionnée
+                              cat: e.target.value,
+                            }))
+                          }
+                        >
+                          {categories.map((cat) => (
+                            <option key={cat.id} value={cat.id}>
+                              {cat.emoji} {cat.displayName}
+                            </option>
+                          ))}
+                        </select>
                       </div>
-                    )}
+                      <div>
+                        <label>Titre du produit</label>
+                        <input
+                          type="text"
+                          value={productFormData.name}
+                          onChange={(e) =>
+                            setProductFormData((prev) => ({
+                              ...prev,
+                              name: e.target.value,
+                            }))
+                          }
+                          placeholder="Ex: Rose de Damas"
+                        />
+                      </div>
+                      <div>
+                        <label>Description</label>
+                        <textarea
+                          value={productFormData.desc}
+                          onChange={(e) =>
+                            setProductFormData((prev) => ({
+                              ...prev,
+                              desc: e.target.value,
+                            }))
+                          }
+                          placeholder="Décrivez ce produit…"
+                        ></textarea>
+                      </div>
+                      <div>
+                        <label>Prix (€)</label>
+                        <input
+                          type="number"
+                          value={productFormData.price}
+                          onChange={(e) =>
+                            setProductFormData((prev) => ({
+                              ...prev,
+                              price: parseFloat(e.target.value) || 0,
+                            }))
+                          }
+                          placeholder="0"
+                          min="0"
+                          step="0.01"
+                        />
+                      </div>
+                      <div>
+                        <label>Couleur associée</label>
+                        <div className="color-row">
+                          <input
+                            type="color"
+                            value={productFormData.color}
+                            onChange={(e) => setProductFormData((prev) => ({
+                              ...prev,
+                              color: e.target.value,
+                            }))}
+                          />
+                          <input
+                            type="text"
+                            value={productFormData.color}
+                            onChange={(e) => setProductFormData((prev) => ({
+                              ...prev,
+                              color: e.target.value,
+                            }))}
+                            placeholder="#c9857a"
+                          />
+                        </div>
+                      </div>
+                      <div>
+                        <label>Image du produit</label>
+                        <input
+                          type="file"
+                          accept="image/*"
+                          onChange={(e) => {
+                            const file = e.target.files?.[0];
+                            if (file) {
+                              const reader = new FileReader();
+                              reader.onload = (event) => {
+                                setProductFormData((prev) => ({
+                                  ...prev,
+                                  img: event.target?.result as string,
+                                }));
+                              };
+                              reader.readAsDataURL(file);
+                            }
+                          }}
+                        />
+                        {productFormData.img && (
+                          <div
+                            style={{
+                              marginTop: "0.5rem",
+                              fontSize: "0.8rem",
+                              color: "rgba(245,240,232,0.6)",
+                            }}
+                          >
+                            Image sélectionnée
+                          </div>
+                        )}
+                      </div>
+                      {productFormData.img && (
+                        <div style={{ margin: "1rem 0", textAlign: "center" }}>
+                          <img
+                            src={productFormData.img}
+                            alt="Aperçu"
+                            style={{
+                              maxWidth: "100%",
+                              maxHeight: "160px",
+                              borderRadius: "8px",
+                              border: "1px solid rgba(255,255,255,.15)",
+                            }}
+                            onError={(e) => {
+                              (e.target as HTMLImageElement).src =
+                                "https://via.placeholder.com/240?text=Image+indisponible";
+                            }}
+                          />
+                        </div>
+                      )}
+                      <button className="btn-add" onClick={() => handleProductSubmit({ preventDefault: () => {} } as any)}>
+                        {editIndex >= 0 ? "Mettre à jour" : "Ajouter le produit"}
+                      </button>
+                    </div>
                   </div>
-                  {productFormData.img && (
-                    <div style={{ margin: "1rem 0", textAlign: "center" }}>
-                      <img
-                        src={productFormData.img}
-                        alt="Aperçu"
+                  <div className="admin-products-panel">
+                    <div className="admin-form-title">
+                      Produits existants (
+                      <span id="prod-count">{filteredProducts.length}</span>)
+                    </div>
+
+                    {/* Barre de recherche pour les produits */}
+                    <div className="admin-search-bar">
+                      <input
+                        type="text"
+                        placeholder="🔍 Rechercher un produit..."
+                        value={productSearchTerm}
+                        onChange={(e) => setProductSearchTerm(e.target.value)}
                         style={{
-                          maxWidth: "100%",
-                          maxHeight: "160px",
+                          width: "100%",
+                          padding: "0.5rem",
                           borderRadius: "8px",
-                          border: "1px solid rgba(255,255,255,.15)",
-                        }}
-                        onError={(e) => {
-                          (e.target as HTMLImageElement).src =
-                            "https://via.placeholder.com/240?text=Image+indisponible";
+                          border: "1px solid rgba(255,255,255,0.2)",
+                          background: "rgba(255,255,255,0.05)",
+                          color: "var(--cream)",
+                          fontSize: "0.9rem",
                         }}
                       />
                     </div>
-                  )}
-                  <button className="btn-add" onClick={() => handleProductSubmit({ preventDefault: () => {} } as any)}>
-                    {editIndex >= 0 ? "Mettre à jour" : "Ajouter le produit"}
-                  </button>
-                </div>
-              </div>
-              <div className="admin-products-panel">
-                <div className="admin-form-title">
-                  Produits existants (
-                  <span id="prod-count">{products.length}</span>)
-                </div>
-                <div className="admin-products-list">
-                  {products.length === 0 ? (
-                    <p
-                      style={{
-                        fontSize: "0.8rem",
-                        color: "rgba(245,240,232,0.3)",
-                        padding: "1rem",
-                      }}
-                    >
-                      Aucun produit pour l'instant.
-                    </p>
-                  ) : (
-                    products.map((p, i) => (
-                      <div key={p.id} className="admin-product-row">
-                        <div
-                          className="admin-prod-color"
+
+                    <div className="admin-products-list">
+                      {filteredProducts.length === 0 ? (
+                        <p
                           style={{
-                            background:
-                              p.color || categories.find(c => c.id === p.cat)?.background || "#b8965a",
+                            fontSize: "0.8rem",
+                            color: "rgba(245,240,232,0.3)",
+                            padding: "1rem",
                           }}
-                        ></div>
-                        <div className="admin-prod-name">{p.name}</div>
-                        <div className="admin-prod-cat">{categories.find(c => c.id === p.cat)?.displayName || p.cat}</div>
-                        <div className="admin-prod-actions">
-                          <button
-                            className="btn-edit"
-                            onClick={() => editProduct(i)}
-                            title="Modifier"
-                          >
-                            ✎
-                          </button>
-                          <button
-                            className="btn-del"
-                            onClick={() => deleteProduct(i)}
-                            title="Supprimer"
-                          >
-                            ✕
-                          </button>
-                        </div>
+                        >
+                          {productSearchTerm ? "Aucun produit trouvé pour cette recherche." : "Aucun produit pour l'instant."}
+                        </p>
+                      ) : (
+                        filteredProducts.map((p, i) => {
+                          const originalIndex = products.findIndex(prod => prod.id === p.id);
+                          return (
+                            <div key={p.id} className="admin-product-row">
+                              <div
+                                className="admin-prod-color"
+                                style={{
+                                  background:
+                                    p.color || categories.find(c => c.id === p.cat)?.background || "#b8965a",
+                                }}
+                              ></div>
+                              <div className="admin-prod-name">{p.name}</div>
+                              <div className="admin-prod-cat">{categories.find(c => c.id === p.cat)?.displayName || p.cat}</div>
+                              <div className="admin-prod-actions">
+                                <button
+                                  className="btn-edit"
+                                  onClick={() => editProduct(originalIndex)}
+                                  title="Modifier"
+                                >
+                                  ✎
+                                </button>
+                                <button
+                                  className="btn-del"
+                                  onClick={() => deleteProduct(originalIndex)}
+                                  title="Supprimer"
+                                >
+                                  ✕
+                                </button>
+                              </div>
+                            </div>
+                          );
+                        })
+                      )}
+                    </div>
+                  </div>
+                </>
+              ) : (
+                <>
+                  {/* Section Catégories */}
+                  <div className="admin-form-panel">
+                    <div className="admin-form-title">
+                      Ajouter / Modifier une catégorie
+                    </div>
+                    <div className="admin-form">
+                      <div>
+                        <label>Nom technique</label>
+                        <input
+                          type="text"
+                          value={categoryFormData.name}
+                          onChange={(e) =>
+                            setCategoryFormData((prev) => ({
+                              ...prev,
+                              name: e.target.value,
+                            }))
+                          }
+                          placeholder="Ex: plants-greffes"
+                        />
                       </div>
-                    ))
-                  )}
-                </div>
-              </div>
+                      <div>
+                        <label>Nom d'affichage</label>
+                        <input
+                          type="text"
+                          value={categoryFormData.displayName}
+                          onChange={(e) =>
+                            setCategoryFormData((prev) => ({
+                              ...prev,
+                              displayName: e.target.value,
+                            }))
+                          }
+                          placeholder="Ex: Plants Greffes"
+                        />
+                      </div>
+                      <div>
+                        <label>Emoji</label>
+                        <input
+                          type="text"
+                          value={categoryFormData.emoji}
+                          onChange={(e) =>
+                            setCategoryFormData((prev) => ({
+                              ...prev,
+                              emoji: e.target.value,
+                            }))
+                          }
+                          placeholder="Ex: 🌱"
+                        />
+                      </div>
+                      <div>
+                        <label>Arrière-plan CSS</label>
+                        <input
+                          type="text"
+                          value={categoryFormData.background}
+                          onChange={(e) =>
+                            setCategoryFormData((prev) => ({
+                              ...prev,
+                              background: e.target.value,
+                            }))
+                          }
+                          placeholder="Ex: linear-gradient(135deg, #4CAF50, #81C784)"
+                        />
+                      </div>
+                      <div>
+                        <label>Image de catégorie</label>
+                        <input
+                          type="text"
+                          value={categoryFormData.image}
+                          onChange={(e) =>
+                            setCategoryFormData((prev) => ({
+                              ...prev,
+                              image: e.target.value,
+                            }))
+                          }
+                          placeholder="URL de l'image..."
+                        />
+                      </div>
+                      <button className="btn-add" onClick={() => handleCategorySubmit({ preventDefault: () => {} } as any)}>
+                        {editCategoryIndex >= 0 ? "Mettre à jour" : "Ajouter la catégorie"}
+                      </button>
+                    </div>
+                  </div>
+                  <div className="admin-products-panel">
+                    <div className="admin-form-title">
+                      Catégories existantes (
+                      <span id="cat-count">{filteredCategories.length}</span>)
+                    </div>
+
+                    {/* Barre de recherche pour les catégories */}
+                    <div className="admin-search-bar">
+                      <input
+                        type="text"
+                        placeholder="🔍 Rechercher une catégorie..."
+                        value={categorySearchTerm}
+                        onChange={(e) => setCategorySearchTerm(e.target.value)}
+                        style={{
+                          width: "100%",
+                          padding: "0.5rem",
+                          borderRadius: "8px",
+                          border: "1px solid rgba(255,255,255,0.2)",
+                          background: "rgba(255,255,255,0.05)",
+                          color: "var(--cream)",
+                          fontSize: "0.9rem",
+                        }}
+                      />
+                    </div>
+
+                    <div className="admin-products-list">
+                      {filteredCategories.length === 0 ? (
+                        <p
+                          style={{
+                            fontSize: "0.8rem",
+                            color: "rgba(245,240,232,0.3)",
+                            padding: "1rem",
+                          }}
+                        >
+                          {categorySearchTerm ? "Aucune catégorie trouvée pour cette recherche." : "Aucune catégorie pour l'instant."}
+                        </p>
+                      ) : (
+                        filteredCategories.map((c, i) => {
+                          const originalIndex = categories.findIndex(cat => cat.id === c.id);
+                          const productCount = products.filter(p => p.cat === c.id).length;
+                          return (
+                            <div key={c.id} className="admin-product-row">
+                              <div
+                                className="admin-prod-color"
+                                style={{
+                                  background: c.background,
+                                }}
+                              ></div>
+                              <div className="admin-prod-name">
+                                {c.emoji} {c.displayName}
+                                <span style={{ fontSize: "0.8rem", color: "rgba(245,240,232,0.5)", marginLeft: "0.5rem" }}>
+                                  ({productCount} produit{productCount !== 1 ? "s" : ""})
+                                </span>
+                              </div>
+                              <div className="admin-prod-cat">{c.name}</div>
+                              <div className="admin-prod-actions">
+                                <button
+                                  className="btn-edit"
+                                  onClick={() => editCategory(originalIndex)}
+                                  title="Modifier"
+                                >
+                                  ✎
+                                </button>
+                                <button
+                                  className="btn-del"
+                                  onClick={() => deleteCategory(originalIndex)}
+                                  title="Supprimer"
+                                  disabled={productCount > 0}
+                                  style={{ opacity: productCount > 0 ? 0.5 : 1 }}
+                                >
+                                  ✕
+                                </button>
+                              </div>
+                            </div>
+                          );
+                        })
+                      )}
+                    </div>
+                  </div>
+                </>
+              )}
             </div>
           </div>
         )}
