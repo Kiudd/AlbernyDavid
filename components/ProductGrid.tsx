@@ -13,6 +13,15 @@ export interface Product {
   price: number;
 }
 
+export interface Category {
+  id: string;
+  name: string;
+  displayName: string;
+  emoji: string;
+  background: string;
+  image?: string;
+}
+
 const initialProducts: Product[] = [
   // PLANTS GREFFES
   {
@@ -942,6 +951,73 @@ const initialProducts: Product[] = [
   },
 ];
 
+const initialCategories: Category[] = [
+  {
+    id: "plants-greffes",
+    name: "plants-greffes",
+    displayName: "Plants Greffes",
+    emoji: "🌱",
+    background: "linear-gradient(135deg, #4CAF50, #81C784)",
+    image: "https://images.unsplash.com/photo-1416879595882-3373a0480b5b?auto=format&fit=crop&w=800&q=80",
+  },
+  {
+    id: "plants-traditionnels",
+    name: "plants-traditionnels",
+    displayName: "Plants Traditionnels",
+    emoji: "🍅",
+    background: "linear-gradient(135deg, #FF5722, #FF8A65)",
+    image: "https://images.unsplash.com/photo-1546470427-e9b3a5db3b2e?auto=format&fit=crop&w=800&q=80",
+  },
+  {
+    id: "suite",
+    name: "suite",
+    displayName: "Suite",
+    emoji: "🍈",
+    background: "linear-gradient(135deg, #FF9800, #FFB74D)",
+    image: "https://images.unsplash.com/photo-1571771019784-3ff35f4f4277?auto=format&fit=crop&w=800&q=80",
+  },
+  {
+    id: "aromatiques-pot-10-5",
+    name: "aromatiques-pot-10-5",
+    displayName: "Aromatiques Pot 10,5",
+    emoji: "🌿",
+    background: "linear-gradient(135deg, #8BC34A, #AED581)",
+    image: "https://images.unsplash.com/photo-1601972597824-8cc2af70de2f?auto=format&fit=crop&w=800&q=80",
+  },
+  {
+    id: "aromatiques-pot-15",
+    name: "aromatiques-pot-15",
+    displayName: "Aromatiques Pot 15",
+    emoji: "🌱",
+    background: "linear-gradient(135deg, #4CAF50, #81C784)",
+    image: "https://images.unsplash.com/photo-1601972597824-8cc2af70de2f?auto=format&fit=crop&w=800&q=80",
+  },
+  {
+    id: "aromatiques-pot-3-litres",
+    name: "aromatiques-pot-3-litres",
+    displayName: "Aromatiques Pot 3 Litres",
+    emoji: "🌿",
+    background: "linear-gradient(135deg, #388E3C, #66BB6A)",
+    image: "https://images.unsplash.com/photo-1601972597824-8cc2af70de2f?auto=format&fit=crop&w=800&q=80",
+  },
+  {
+    id: "divers",
+    name: "divers",
+    displayName: "Divers",
+    emoji: "🥕",
+    background: "linear-gradient(135deg, #795548, #A1887F)",
+    image: "https://images.unsplash.com/photo-1449339854873-750e6913301b?auto=format&fit=crop&w=800&q=80",
+  },
+  {
+    id: "oignons",
+    name: "oignons",
+    displayName: "Oignons",
+    emoji: "🧅",
+    background: "linear-gradient(135deg, #FFEB3B, #FFF176)",
+    image: "https://images.unsplash.com/photo-1582515073490-39981397c445?auto=format&fit=crop&w=800&q=80",
+  },
+];
+
 interface ProductGridProps {
   limit?: number;
   showFilters?: boolean;
@@ -952,13 +1028,17 @@ export default function ProductGrid({
   showFilters = false,
 }: ProductGridProps) {
   const [products, setProducts] = useState<Product[]>(initialProducts);
+  const [categories, setCategories] = useState<Category[]>(initialCategories);
   const [activeFilter, setActiveFilter] = useState("tous");
+  const [searchTerm, setSearchTerm] = useState("");
 
   useEffect(() => {
-    const saved = localStorage.getItem("AlbernyDavidProducts");
-    if (saved) {
+    const savedProducts = localStorage.getItem("AlbernyDavidProducts");
+    const savedCategories = localStorage.getItem("AlbernyDavidCategories");
+    
+    if (savedProducts) {
       try {
-        const parsed = JSON.parse(saved);
+        const parsed = JSON.parse(savedProducts);
         // Check if the saved products have the new categories
         const hasNewCategories = parsed.some((p: Product) => 
           ['plants-greffes', 'plants-traditionnels', 'suite', 'aromatiques-pot-10-5', 'aromatiques-pot-15', 'aromatiques-pot-3-litres', 'divers', 'oignons'].includes(p.cat)
@@ -978,20 +1058,43 @@ export default function ProductGrid({
       setProducts(initialProducts);
       localStorage.setItem("AlbernyDavidProducts", JSON.stringify(initialProducts));
     }
+
+    if (savedCategories) {
+      try {
+        setCategories(JSON.parse(savedCategories));
+      } catch {
+        setCategories(initialCategories);
+        localStorage.setItem("AlbernyDavidCategories", JSON.stringify(initialCategories));
+      }
+    } else {
+      setCategories(initialCategories);
+      localStorage.setItem("AlbernyDavidCategories", JSON.stringify(initialCategories));
+    }
   }, []);
 
   useEffect(() => {
     localStorage.setItem("AlbernyDavidProducts", JSON.stringify(products));
   }, [products]);
 
+  useEffect(() => {
+    localStorage.setItem("AlbernyDavidCategories", JSON.stringify(categories));
+  }, [categories]);
+
   const filteredProducts =
     activeFilter === "tous"
       ? products
       : products.filter((p) => p.cat === activeFilter);
 
-  const displayedProducts = limit
-    ? filteredProducts.slice(0, limit)
+  const searchedProducts = searchTerm
+    ? filteredProducts.filter((p) =>
+        p.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        p.desc.toLowerCase().includes(searchTerm.toLowerCase())
+      )
     : filteredProducts;
+
+  const displayedProducts = limit
+    ? searchedProducts.slice(0, limit)
+    : searchedProducts;
 
   useEffect(() => {
     // Intersection Observer for reveal animations
@@ -1017,63 +1120,63 @@ export default function ProductGrid({
   return (
     <>
       {showFilters && (
-        <div className="category-tabs">
-          <button
-            className={`cat-tab ${activeFilter === "tous" ? "active" : ""}`}
-            onClick={() => handleFilter("tous")}
-          >
-            Tous
-          </button>
-          <button
-            className={`cat-tab ${activeFilter === "plants-greffes" ? "active" : ""}`}
-            onClick={() => handleFilter("plants-greffes")}
-          >
-            Plants Greffes
-          </button>
-          <button
-            className={`cat-tab ${activeFilter === "plants-traditionnels" ? "active" : ""}`}
-            onClick={() => handleFilter("plants-traditionnels")}
-          >
-            Plants Traditionnels
-          </button>
-          <button
-            className={`cat-tab ${activeFilter === "suite" ? "active" : ""}`}
-            onClick={() => handleFilter("suite")}
-          >
-            Suite
-          </button>
-          <button
-            className={`cat-tab ${activeFilter === "aromatiques-pot-10-5" ? "active" : ""}`}
-            onClick={() => handleFilter("aromatiques-pot-10-5")}
-          >
-            Aromatiques Pot 10,5
-          </button>
-          <button
-            className={`cat-tab ${activeFilter === "aromatiques-pot-15" ? "active" : ""}`}
-            onClick={() => handleFilter("aromatiques-pot-15")}
-          >
-            Aromatiques Pot 15
-          </button>
-          <button
-            className={`cat-tab ${activeFilter === "aromatiques-pot-3-litres" ? "active" : ""}`}
-            onClick={() => handleFilter("aromatiques-pot-3-litres")}
-          >
-            Aromatiques Pot 3 Litres
-          </button>
-          <button
-            className={`cat-tab ${activeFilter === "divers" ? "active" : ""}`}
-            onClick={() => handleFilter("divers")}
-          >
-            Divers
-          </button>
-          <button
-            className={`cat-tab ${activeFilter === "oignons" ? "active" : ""}`}
-            onClick={() => handleFilter("oignons")}
-          >
-            Oignons
-          </button>
+        <>
+          {/* Barre de recherche */}
+          <div className="search-bar">
+            <input
+              type="text"
+              placeholder="Rechercher un produit..."
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              className="search-input"
+            />
+          </div>
+
+          {/* Filtres par catégorie */}
+          <div className="category-tabs">
+            <button
+              className={`cat-tab ${activeFilter === "tous" ? "active" : ""}`}
+              onClick={() => handleFilter("tous")}
+            >
+              Tous
+            </button>
+            {categories.map((category) => (
+              <button
+                key={category.id}
+                className={`cat-tab ${activeFilter === category.id ? "active" : ""}`}
+                onClick={() => handleFilter(category.id)}
+                style={{
+                  background: activeFilter === category.id ? category.background : undefined,
+                }}
+              >
+                {category.emoji} {category.displayName}
+              </button>
+            ))}
+          </div>
+        </>
+      )}
+
+      {/* Category Image Display */}
+      {activeFilter !== "tous" && (
+        <div className="category-image-container">
+          {(() => {
+            const activeCategory = categories.find(cat => cat.id === activeFilter);
+            return activeCategory?.image ? (
+              <div className="category-image-wrapper">
+                <img 
+                  src={activeCategory.image} 
+                  alt={activeCategory.displayName}
+                  className="category-image"
+                />
+                <div className="category-image-overlay">
+                  <h2 className="category-title">{activeCategory.emoji} {activeCategory.displayName}</h2>
+                </div>
+              </div>
+            ) : null;
+          })()}
         </div>
       )}
+
       <div className="products-grid">
         {displayedProducts.map((product) => (
           <ProductCard key={product.id} product={product} />
