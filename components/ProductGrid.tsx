@@ -1032,6 +1032,13 @@ export default function ProductGrid({
   const [activeFilter, setActiveFilter] = useState("tous");
   const [searchTerm, setSearchTerm] = useState("");
 
+  // Effet pour gérer la recherche : quand on tape, passer automatiquement à "tous"
+  useEffect(() => {
+    if (searchTerm && activeFilter !== "tous") {
+      setActiveFilter("tous");
+    }
+  }, [searchTerm, activeFilter]);
+
   useEffect(() => {
     const savedProducts = localStorage.getItem("AlbernyDavidProducts");
     const savedCategories = localStorage.getItem("AlbernyDavidCategories");
@@ -1085,10 +1092,18 @@ export default function ProductGrid({
       ? products
       : products.filter((p) => p.cat === activeFilter);
 
+  // Fonction pour normaliser le texte (supprimer accents et mettre en minuscules)
+  const normalizeText = (text: string) => {
+    return text
+      .toLowerCase()
+      .normalize("NFD")
+      .replace(/[\u0300-\u036f]/g, ""); // Supprime les accents
+  };
+
   const searchedProducts = searchTerm
     ? filteredProducts.filter((p) =>
-        p.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        p.desc.toLowerCase().includes(searchTerm.toLowerCase())
+        normalizeText(p.name).includes(normalizeText(searchTerm)) ||
+        normalizeText(p.desc).includes(normalizeText(searchTerm))
       )
     : filteredProducts;
 
