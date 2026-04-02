@@ -803,9 +803,8 @@ export default function Admin() {
                         />
                       </div>
                       <div>
-                        <label>Arrière-plan CSS</label>
-                        <input
-                          type="text"
+                        <label>Arrière-plan</label>
+                        <select
                           value={categoryFormData.background}
                           onChange={(e) =>
                             setCategoryFormData((prev) => ({
@@ -813,23 +812,68 @@ export default function Admin() {
                               background: e.target.value,
                             }))
                           }
-                          placeholder="Ex: linear-gradient(135deg, #4CAF50, #81C784)"
-                        />
+                        >
+                          <option value="">Choisir un arrière-plan...</option>
+                          <option value="linear-gradient(135deg, #4CAF50, #81C784)">🌱 Vert naturel</option>
+                          <option value="linear-gradient(135deg, #FF5722, #FF8A65)">🍅 Rouge tomate</option>
+                          <option value="linear-gradient(135deg, #FF9800, #FFB74D)">🍈 Orange fruité</option>
+                          <option value="linear-gradient(135deg, #2196F3, #64B5F6)">💧 Bleu frais</option>
+                          <option value="linear-gradient(135deg, #9C27B0, #BA68C8)">🍇 Violet royal</option>
+                          <option value="linear-gradient(135deg, #FFEB3B, #FFF176)">🌻 Jaune soleil</option>
+                          <option value="linear-gradient(135deg, #795548, #A1887F)">🌰 Marron terre</option>
+                          <option value="linear-gradient(135deg, #607D8B, #90A4AE)">🌊 Bleu gris</option>
+                          <option value="linear-gradient(135deg, #E91E63, #F06292)">🌸 Rose tendre</option>
+                        </select>
                       </div>
                       <div>
                         <label>Image de catégorie</label>
                         <input
-                          type="text"
-                          value={categoryFormData.image}
-                          onChange={(e) =>
-                            setCategoryFormData((prev) => ({
-                              ...prev,
-                              image: e.target.value,
-                            }))
-                          }
-                          placeholder="URL de l'image..."
+                          type="file"
+                          accept="image/*"
+                          onChange={(e) => {
+                            const file = e.target.files?.[0];
+                            if (file) {
+                              const reader = new FileReader();
+                              reader.onload = (event) => {
+                                setCategoryFormData((prev) => ({
+                                  ...prev,
+                                  image: event.target?.result as string,
+                                }));
+                              };
+                              reader.readAsDataURL(file);
+                            }
+                          }}
                         />
+                        {categoryFormData.image && (
+                          <div
+                            style={{
+                              marginTop: "0.5rem",
+                              fontSize: "0.8rem",
+                              color: "rgba(245,240,232,0.6)",
+                            }}
+                          >
+                            Image sélectionnée
+                          </div>
+                        )}
                       </div>
+                      {categoryFormData.image && (
+                        <div style={{ margin: "1rem 0", textAlign: "center" }}>
+                          <img
+                            src={categoryFormData.image}
+                            alt="Aperçu de la catégorie"
+                            style={{
+                              maxWidth: "100%",
+                              maxHeight: "160px",
+                              borderRadius: "8px",
+                              border: "1px solid rgba(255,255,255,.15)",
+                            }}
+                            onError={(e) => {
+                              (e.target as HTMLImageElement).src =
+                                "https://via.placeholder.com/240?text=Image+indisponible";
+                            }}
+                          />
+                        </div>
+                      )}
                       <button className="btn-add" onClick={() => handleCategorySubmit({ preventDefault: () => {} } as any)}>
                         {editCategoryIndex >= 0 ? "Mettre à jour" : "Ajouter la catégorie"}
                       </button>
